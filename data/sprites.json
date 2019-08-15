@@ -1,1 +1,38 @@
-{"tomb_x":{"src":"/drawings/sprites/tomb_x.json","x":-177,"y":-225,"states":{"default":{"start":0,"end":0}},"state":"default","scenes":["game"]},"trees_x":{"src":"/drawings/sprites/trees_x.json","x":689.8673879038065,"y":-544.5250312458126,"states":{"default":{"start":0,"end":0}},"state":"default","scenes":["game"]}}
+{
+	"scenery": {
+		"tomb_x": {
+			"src": "/drawings/sprites/tomb_x.json",
+			"x": -177,
+			"y": -225,
+			"states": {
+				"default": {
+					"start": 0,
+					"end": 0
+				}
+			},
+			"state": "default",
+			"scenes": [
+				"game"
+			]
+		}
+	},
+	"textures": {
+		"trees_x": {
+			"src": "/drawings/sprites/trees_x.json",
+			"locations": [
+				{ "x": 689, "y": -544 }
+			],
+			"states": {
+				"default": {
+					"start": 0,
+					"end": 0
+				}
+			},
+			"state": "default",
+			"scenes": [
+				"game"
+			],
+			"tags": "i"
+		}
+	}
+}
