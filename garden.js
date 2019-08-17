@@ -9,6 +9,8 @@ function loadSprites(file, json) {
 	}
 } /* data tied to edi, decouple later */
 
+
+
 Game.sprites = {};
 Game.ui = {};
 Game.scenes = [];
@@ -19,7 +21,8 @@ Game.init({
 	lps: 12,
 	mixedColors: true
 });
-Game.load({ ui: "/data/ui.json", sprites: "/data/sprites.json" }, loadSprites, Game.start);
+const data = new Data(Game, { ui: UI, scenery: Item, textures: Texture }, {});
+Game.load({ ui: "/data/ui.json", sprites: "/data/sprites.json" }, data.loadSprites, Game.start);
 
 let player;
 
@@ -38,9 +41,11 @@ function update() {
 		y: Game.height - player.y
 	};
 
-	for (const key in Game.sprites) {
-		if (Game.sprites[key].scenes.includes(Game.scene))
-			Game.sprites[key].update(offset);
+	for (const type in Game.sprites) {
+		for (const key in Game.sprites[type]) {
+			if (Game.sprites[type][key].scenes.includes(Game.scene))
+				Game.sprites[type][key].update(offset);
+		}
 	}
 }
 
@@ -49,9 +54,11 @@ function draw() {
 	if (Game.scene == 'game')
 		player.display();
 
-	for (const key in Game.sprites) {
-		if (Game.sprites[key].scenes.includes(Game.scene))
-			Game.sprites[key].display();
+	for (const type in Game.sprites) {
+		for (const key in Game.sprites[type]) {
+			if (Game.sprites[type][key].scenes.includes(Game.scene))
+				Game.sprites[type][key].display();
+		}
 	}
 
 	for (const key in Game.ui) {
