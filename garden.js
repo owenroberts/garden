@@ -1,19 +1,6 @@
-function loadSprites(file, json) {
-	for (const key in json) {
-		const params = { label: key, type: file, center: true, ...json[key] }
-		Game[file][key] = file == 'ui' ? new UI(params) : new Item(params);
-		for (let i = 0; i < json[key].scenes.length; i++) {
-			const scene = json[key].scenes[i];
-			if (!Game.scenes.includes(scene)) Game.scenes.push(scene);
-		}
-	}
-} /* data tied to edi, decouple later */
-
-
-
 Game.sprites = {};
 Game.ui = {};
-Game.scenes = [];
+Game.scenes = []; /* should these be defaults? */
 Game.init({
 	canvas: "lines",
 	width: window.innerWidth,
@@ -21,8 +8,8 @@ Game.init({
 	lps: 12,
 	mixedColors: true
 });
-const data = new Data(Game, { ui: UI, scenery: Item, textures: Texture }, {});
-Game.load({ ui: "/data/ui.json", sprites: "/data/sprites.json" }, data.loadSprites, Game.start);
+
+Game.load({ ui: "/data/ui.json", sprites: "/data/sprites.json" }, { ui: UI, scenery: Item, textures: Texture }, Game.start);
 
 let player;
 
