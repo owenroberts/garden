@@ -30,7 +30,6 @@ class Player extends Sprite {
 			this.animation.state = 'idle';
 		});
 
-		this.bounds = { top: -2048, bottom: 2048, left: -2048, right: 2048 }; /* where ???, Game? */
 		this.input = { right: false, up: false, left: false, down: false };
 	}
 
@@ -41,22 +40,22 @@ class Player extends Sprite {
 	update() {
 		let state = 'idle';
 		if (this.input.up) {
-			if (this.y > this.bounds.top)
+			if (this.y > Game.bounds.top)
 				this.y -= this.speed.y;
 			state = 'up';
 		}
 		if (this.input.down) {
-			if (this.y < this.bounds.bottom)
+			if (this.y < Game.bounds.bottom)
 				this.y += this.speed.y;
 			state = 'down';
 		}
 		if (this.input.right) {
-			if (this.x < this.bounds.right)
+			if (this.x < Game.bounds.right)
 				this.x += this.speed.x;
 			state = 'right';
 		}
 		if (this.input.left) {
-			if (this.x > this.bounds.left)
+			if (this.x > Game.bounds.left)
 				this.x -= this.speed.x;
 			state = 'left';
 		}
