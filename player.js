@@ -59,6 +59,6 @@ class Player extends Sprite {
 				this.x -= this.speed.x;
 			state = 'left';
 		}
-		this.animation.setState(state);
+		this.animation.state = state;
 	}
 }
