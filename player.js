@@ -12,21 +12,6 @@ class Player extends Sprite {
 		this.speed = new Cool.Vector(5, 5);
 		
 		this.addAnimation(src, () => {
-			this.animation.states = {
-				"idle": { "start": 0, "end": 4 },
-				"right": { "start": 4, "end": 8 },
-				"left": { "start": 8, "end": 12 },
-				"down": { "start": 12, "end": 14 },
-				"up": { "start": 14, "end": 16 },
-				"flower": { "start": 16, "end": 19 },
-				"skull": { "start": 19, "end": 23 },
-				"apple-x": { "start": 23, "end": 27 },
-				"heart": { "start": 27, "end": 32 },
-				"wave": { "start": 32, "end": 36 },
-				"drop-heart": { "start": 36, "end": 40 },
-				"drop-flower": { "start": 40, "end": 43 },
-				"drop-skull": { "start": 43, "end": 46 }
-			}; /* obvi needs to be in data */
 			this.animation.state = 'idle';
 		});
 
@@ -38,7 +23,10 @@ class Player extends Sprite {
 	}
 
 	update() {
-		let state = 'idle';
+		let state = this.animation.state.includes('idle') ?
+			this.animation.state :
+			Cool.random(['idle', 'idle_2', 'idle_3', 'idle_1'])
+			;
 		if (this.input.up) {
 			if (this.y > Game.bounds.top)
 				this.y -= this.speed.y;

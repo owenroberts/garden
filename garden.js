@@ -15,7 +15,7 @@ let player;
 
 function start() {
 	Game.scene = 'game';
-	player = new Player('drawings/cat.json', Game.width/2, Game.height/2);
+	player = new Player('/drawings/players/pilgrim.json', Game.width/2, Game.height/2);
 }
 
 function update() {
