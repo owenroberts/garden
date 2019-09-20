@@ -9,7 +9,7 @@ class Player extends Sprite {
 		// this.position.y += Game.height/2;
 
 		this.debug = debug || false;
-		this.speed = new Cool.Vector(5, 5);
+		this.speed = new Cool.Vector(8, 8);
 		
 		this.addAnimation(src, () => {
 			this.animation.state = 'idle';
@@ -25,8 +25,8 @@ class Player extends Sprite {
 	update() {
 		let state = this.animation.state.includes('idle') ?
 			this.animation.state :
-			Cool.random(['idle', 'idle_2', 'idle_3', 'idle_1'])
-			;
+			Cool.random(['idle', 'idle_2', 'idle_3', 'idle_1']);
+			
 		if (this.input.up) {
 			if (this.y > Game.bounds.top)
 				this.y -= this.speed.y;
