@@ -2,3 +2,5 @@
 notes.txt
 doc/
 music/
+*.gdoc
+wave-palette.json
