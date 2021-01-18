@@ -4,3 +4,4 @@ doc/
 music/
 *.gdoc
 wave-palette.json
+node_modules/

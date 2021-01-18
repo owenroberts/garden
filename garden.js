@@ -1,57 +1,59 @@
-Game.sprites = {};
-Game.ui = {};
-Game.scenes = []; /* should these be defaults? */
-Game.init({
-	canvas: "lines",
+/* what the hell am i doing */
+const gme = new Game({
+	dps: 24,
 	width: window.innerWidth,
 	height: window.innerHeight,
-	lps: 12,
-	mixedColors: true
+	mixedColors: true,
+	checkRetina: true,
+	debug: true,
+	stats: false,
+	scenes: ['game']
 });
 
-Game.load({ ui: "/data/ui.json", sprites: "/data/sprites.json" }, { ui: UI, scenery: Item, textures: Texture }, Game.start);
+gme.load({ 
+	scenery: 'data/scenery.json',
+	sprites: 'data/sprites.json',
+	textures: 'data/textures.json'
+});
 
-let player;
+
+let pilgrim;
 
 function start() {
-	Game.scene = 'game';
-	player = new Player('/drawings/players/pilgrim.json', Game.width/2, Game.height/2);
+	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.width/2, gme.height/2);
+
+	// console.log(gme.anims, gme.data);
+
+	for (const key in gme.data.scenery.entries) {
+		const data = gme.data.scenery.entries[key];
+		const s = new Entity({ x: data.x, y: data.y });
+		s.addAnimation(gme.anims.scenery[key]);
+		gme.scenes.add(s, data.scenes);
+		gme.updateBounds(s.position);
+
+	}
+
+	for (const key in gme.data.textures.entries) {
+		const data = gme.data.textures.entries[key];
+		gme.scenes.add(new Texture({
+			animation: gme.anims.textures[key],
+			locations: data.locations,
+			frame: 'index'
+		}), data.scenes);
+		for (let i = 0; i < data.locations.length; i++) {
+			gme.updateBounds(data.locations[i]);
+		}
+	}
 }
 
 function update() {
-
-	if (Game.scene == 'game') 
-		player.update();
-
-	const offset = {
-		x: Game.width - player.x,
-		y: Game.height - player.y
-	};
-
-	for (const type in Game.sprites) {
-		for (const key in Game.sprites[type]) {
-			if (Game.sprites[type][key].scenes.includes(Game.scene))
-				Game.sprites[type][key].update(offset);
-		}
-	}
+	pilgrim.update();
+	gme.scenes.current.update(new Cool.Vector(gme.width - pilgrim.mapPosition.x, gme.height - pilgrim.mapPosition.y));
 }
 
 function draw() {
-
-	if (Game.scene == 'game')
-		player.display();
-
-	for (const type in Game.sprites) {
-		for (const key in Game.sprites[type]) {
-			if (Game.sprites[type][key].scenes.includes(Game.scene))
-				Game.sprites[type][key].display();
-		}
-	}
-
-	for (const key in Game.ui) {
-		if (Game.ui[key].scenes.includes(Game.scene)) 
-			Game.ui[key].display();
-	}
+	gme.scenes.current.display();
+	pilgrim.display();
 }
 
 /* events */
@@ -59,19 +61,19 @@ function keyDown(key) {
 	switch (key) {
 		case 'a':
 		case 'left':
-			player.inputKey('left', true);
+			pilgrim.inputKey('left', true);
 			break;
 		case 'w':
 		case 'up':
-			player.inputKey('up', true);
+			pilgrim.inputKey('up', true);
 			break;
 		case 'd':
 		case 'right':
-			player.inputKey('right', true);
+			pilgrim.inputKey('right', true);
 			break;
 		case 's':
 		case 'down':
-			player.inputKey('down', true);
+			pilgrim.inputKey('down', true);
 			break;
 
 		case 'e':
@@ -84,19 +86,19 @@ function keyUp(key) {
 	switch (key) {
 		case 'a':
 		case 'left':
-			player.inputKey('left', false);
+			pilgrim.inputKey('left', false);
 			break;
 		case 'w':
 		case 'up':
-			player.inputKey('up', false);
+			pilgrim.inputKey('up', false);
 			break;
 		case 'd':
 		case 'right':
-			player.inputKey('right', false);
+			pilgrim.inputKey('right', false);
 			break;
 		case 's':
 		case 'down':
-			player.inputKey('down', false);
+			pilgrim.inputKey('down', false);
 			break;
 
 		case 'e':
