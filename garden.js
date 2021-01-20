@@ -16,7 +16,6 @@ gme.load({
 	textures: 'data/textures.json'
 });
 
-
 let pilgrim;
 
 function start() {
@@ -30,7 +29,6 @@ function start() {
 		s.addAnimation(gme.anims.scenery[key]);
 		gme.scenes.add(s, data.scenes);
 		gme.updateBounds(s.position);
-
 	}
 
 	for (const key in gme.data.textures.entries) {
