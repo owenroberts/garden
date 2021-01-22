@@ -21,7 +21,6 @@ let pilgrim;
 function start() {
 	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.width/2, gme.height/2);
 
-	// console.log(gme.anims, gme.data);
 
 	for (const key in gme.data.scenery.entries) {
 		const data = gme.data.scenery.entries[key];
