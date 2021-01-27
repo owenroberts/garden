@@ -6,21 +6,21 @@ const gme = new Game({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: false,
+	stats: true,
+	suspend: false,
 	scenes: ['game']
 });
 
 gme.load({ 
 	scenery: 'data/scenery.json',
-	sprites: 'data/sprites.json',
-	textures: 'data/textures.json'
+	textures: 'data/textures.json',
+	sprites: 'data/sprites.json'
 });
 
 let pilgrim;
 
 function start() {
 	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.width/2, gme.height/2);
-
 
 	for (const key in gme.data.scenery.entries) {
 		const data = gme.data.scenery.entries[key];
