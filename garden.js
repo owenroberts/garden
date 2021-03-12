@@ -45,7 +45,8 @@ function start() {
 
 function update() {
 	pilgrim.update();
-	gme.scenes.current.update(new Cool.Vector(gme.width - pilgrim.mapPosition.x, gme.height - pilgrim.mapPosition.y));
+	const offset = new Cool.Vector(gme.width - pilgrim.mapPosition.x, gme.height - pilgrim.mapPosition.y)
+	gme.scenes.current.update(offset);
 }
 
 function draw() {

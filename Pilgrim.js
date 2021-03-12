@@ -1,10 +1,11 @@
 class Pilgrim extends Sprite {
 	constructor(animation, x, y, debug) {
 		super(x, y);
-		this.mapPosition = {
-			x: Math.round(x),
-			y: Math.round(y)
-		};
+		this.mapPosition = new Cool.Vector(Math.round(x), Math.round(y));
+		// {
+		// 	x: Math.round(x),
+		// 	y: Math.round(y)
+		// };
 		this.center = true; /* need better name */
 		
 		// this.position.x += Game.width/2;
@@ -27,27 +28,43 @@ class Pilgrim extends Sprite {
 		let state = this.animation.stateName.includes('idle') ?
 			this.animation.state :
 			Cool.random(['idle', 'idle_2', 'idle_3', 'idle_1']);
+
+		const speed = new Cool.Vector();
+
+		if (Object.values(this.input).filter(v => v).length > 2) return;
 			
 		if (this.input.up) {
-			if (this.mapPosition.y > gme.bounds.top)
-				this.mapPosition.y -= this.speed.y;
-			state = 'up';
+			if (this.mapPosition.y > gme.bounds.top) speed.y = -this.speed.y;
+			if (this.input.left || this.input.right) speed.y *= 0.71;
+			
+			if (this.input.left) state = 'up-left';
+			else if (this.input.right) state = 'up-right';
+			else state = 'up';
 		}
+
 		if (this.input.down) {
-			if (this.mapPosition.y < gme.bounds.bottom)
-				this.mapPosition.y += this.speed.y;
-			state = 'down';
+			if (this.mapPosition.y > gme.bounds.top) speed.y = this.speed.y;
+			if (this.input.left || this.input.right) speed.y *= 0.71;
+			
+			if (this.input.left) state = 'down-left';
+			else if (this.input.right) state = 'down-right';
+			else state = 'down';
 		}
-		if (this.input.right) {
-			if (this.mapPosition.x < gme.bounds.right)
-				this.mapPosition.x += this.speed.x;
-			state = 'right';
-		}
+
 		if (this.input.left) {
-			if (this.mapPosition.x > gme.bounds.left)
-				this.mapPosition.x -= this.speed.x;
-			state = 'left';
+			if (this.mapPosition.x < gme.bounds.right) speed.x = -this.speed.x;
+			if (this.input.up || this.input.down) speed.x *= 0.71;
+			if (!this.input.up && !this.input.down) state = 'left';
 		}
+
+
+		if (this.input.right) {
+			if (this.mapPosition.x < gme.bounds.right) speed.x = this.speed.x;
+			if (this.input.up || this.input.down) speed.x *= 0.71;
+			if (!this.input.up && !this.input.down) state = 'right';
+		}
+		
+		this.mapPosition.add(speed);
 		this.animation.state = state;
 	}
 }
