@@ -43,8 +43,9 @@ function start() {
 	}
 }
 
-function update() {
-	pilgrim.update();
+function update(timeElapsed) {
+	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
+	pilgrim.update(timeElapsed / gme.dps);
 	const offset = new Cool.Vector(gme.width - pilgrim.mapPosition.x, gme.height - pilgrim.mapPosition.y)
 	gme.scenes.current.update(offset);
 }

@@ -24,7 +24,7 @@ class Pilgrim extends Sprite {
 		this.input[key] = state;
 	}
 
-	update() {
+	update(time) {
 		let state = this.animation.stateName.includes('idle') ?
 			this.animation.state :
 			Cool.random(['idle', 'idle_2', 'idle_3', 'idle_1']);
@@ -64,7 +64,7 @@ class Pilgrim extends Sprite {
 			if (!this.input.up && !this.input.down) state = 'right';
 		}
 		
-		this.mapPosition.add(speed);
+		this.mapPosition.add(speed.multiply(time));
 		this.animation.state = state;
 	}
 }
