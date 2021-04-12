@@ -15,7 +15,7 @@ gme.load({
 	scenery: 'data/scenery.json',
 	textures: 'data/textures.json',
 	sprites: 'data/sprites.json'
-});
+}, false);
 
 let pilgrim;
 
