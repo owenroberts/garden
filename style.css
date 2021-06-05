@@ -2,7 +2,7 @@
 html, body { width: 100%; height: 100%; }
 canvas { display: block; }
 
-#sound-splash {
+#splash {
 	z-index: 1;
 	position: fixed;
 	width: 100%;
@@ -10,14 +10,27 @@ canvas { display: block; }
 	top: 0;
 	bottom: 0;
 	padding: 2em;
+	display: flex;
+	align-items: center;
+    justify-content: center;
 }
 
-#sound-splash * {
-	font-family: verdana;
+#title {
 	font-size: 2em;
+	margin-bottom: 1em;
+}
+
+#splash * {
+	font-family: verdana;
+	
+}
+
+#sound-splash {
+	display: none;
 }
 
 #sound-splash button {
 	cursor: pointer;
 	padding: 0.5em;
+	font-size: 1.5rem;
 }

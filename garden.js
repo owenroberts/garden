@@ -1,13 +1,16 @@
 /* what the hell am i doing */
+
 const gme = new Game({
 	dps: 24,
+	lineWidth: 1,
+	zoom: 1.5,
 	width: window.innerWidth,
 	height: window.innerHeight,
-	mixedColors: true,
+	multiColor: true,
 	checkRetina: true,
 	debug: true,
 	stats: true,
-	suspend: false,
+	suspend: true,
 	scenes: ['game']
 });
 
@@ -18,9 +21,30 @@ gme.load({
 }, false);
 
 let pilgrim;
+let userStarted = false;
+
+const wSoundBtn = document.getElementById('with')
+wSoundBtn.addEventListener('click', userStart);
+const wOutSoundBtn = document.getElementById('out')
+wOutSoundBtn.addEventListener('click', userStart);
+
+function userStart() {
+	userStarted = true;
+	wSoundBtn.removeEventListener('click', userStart);
+	wOutSoundBtn.removeEventListener('click', userStart);
+	document.getElementById('splash').remove();
+}
 
 function start() {
-	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.width/2, gme.height/2);
+
+	// done loading, show start/sound buttons
+	document.getElementById('sound-splash').style.display = 'block';
+	document.getElementById('title').textContent = '~~~ start garden ~~~';
+
+	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.width / 2, gme.view.height / 2);
+	pilgrim.mapPosition.x = 450;
+	pilgrim.mapPosition.y = 270;
+
 
 	for (const key in gme.data.scenery.entries) {
 		const data = gme.data.scenery.entries[key];
@@ -44,13 +68,15 @@ function start() {
 }
 
 function update(timeElapsed) {
+	if (!userStarted) return;
 	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
 	pilgrim.update(timeElapsed / gme.dps);
-	const offset = new Cool.Vector(gme.width - pilgrim.mapPosition.x, gme.height - pilgrim.mapPosition.y)
+	const offset = new Cool.Vector(gme.view.width - pilgrim.mapPosition.x, gme.view.height - pilgrim.mapPosition.y)
 	gme.scenes.current.update(offset);
 }
 
 function draw() {
+	if (!userStarted) return;
 	gme.scenes.current.display();
 	pilgrim.display();
 }

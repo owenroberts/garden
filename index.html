@@ -11,10 +11,14 @@
 	<canvas id="lines">
 		How old is your dang computer???
 	</canvas>
-	<div id="sound-splash">
-		<p>~~~ start garden ~~~</p>
-		<button id="with">with sound</button>
-		<button id="out">without sound</button>
+	<div id="splash">
+		<div id="inner-splash">
+			<p id="title">~~~ loading garden ~~~</p>
+			<div id="sound-splash">
+				<button id="out">without sound</button>
+				<button id="with">with sound</button>
+			</div>
+		</div>
 	</div>
 
 	<!-- doodoo music -->
@@ -26,16 +30,12 @@
 				'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
 				'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
 			]);
-			document.getElementById('sound-splash').remove();
+			
 		});
-		document.getElementById('out').addEventListener('click', () => {
-			document.getElementById('sound-splash').remove();
-		});
-		
 	</script>
 
-	<script src="lines/lib/lodash.js"></script>
-	<script src="lines/lib/cool/cool.js"></script>
+	<script src="lines/lib/lodash.js"></script> <!-- need? -->
+	<script src="lines/lib/cool/cool.js"></script> <!--  need ? -->
 	<script src="lines/lib/stats.min.js"></script>
 	<script src="lines/build/base.min.js"></script>
 	<script src="lines/build/game.min.js"></script>
