@@ -50,6 +50,7 @@ function start() {
 		const data = gme.data.scenery.entries[key];
 		const s = new Entity({ x: data.x, y: data.y });
 		s.addAnimation(gme.anims.scenery[key]);
+		s.animation.play();
 		gme.scenes.add(s, data.scenes);
 		gme.updateBounds(s.position);
 	}
