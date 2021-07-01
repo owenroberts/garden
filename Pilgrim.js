@@ -2,15 +2,8 @@ class Pilgrim extends Sprite {
 	constructor(animation, x, y, debug) {
 		super(x, y);
 		this.mapPosition = new Cool.Vector(Math.round(x), Math.round(y));
-		// {
-		// 	x: Math.round(x),
-		// 	y: Math.round(y)
-		// };
 		this.center = true; /* need better name */
 		
-		// this.position.x += Game.width/2;
-		// this.position.y += Game.height/2;
-
 		this.debug = debug || false;
 		this.speed = new Cool.Vector(8, 8);
 		
@@ -18,10 +11,61 @@ class Pilgrim extends Sprite {
 		this.animation.state = 'idle';
 
 		this.input = { right: false, up: false, left: false, down: false };
+		this.inBounds = {
+			x: true,
+			y: true,
+		};
+
 	}
 
 	inputKey(key, state) {
 		this.input[key] = state;
+	}
+
+	checkBounds(bounds, halfHeight, halfWidth) {
+		if (this.mapPosition.y <= bounds.top && this.position.y <= halfHeight) {
+			this.inBounds.y = false;
+
+			if (this.position.y < -halfHeight) {
+				this.position.y = halfHeight * 3;
+				this.mapPosition.y = bounds.bottom;
+			}
+		}
+
+		if (this.mapPosition.y >= bounds.bottom && this.position.y >= halfHeight) {
+			this.inBounds.y = false;
+
+			if (this.position.y > halfHeight * 3) {
+				this.position.y = -halfHeight;
+				this.mapPosition.y = bounds.top;
+			}
+		}
+
+		if (this.inBounds.y && this.position.y !== halfHeight) {
+			this.position.y = halfHeight;
+		}
+
+		if (this.mapPosition.x <= bounds.left && this.position.x <= halfWidth) {
+			this.inBounds.x = false;
+
+			if (this.position.x < -halfWidth) {
+				this.position.x = halfWidth * 3;
+				this.mapPosition.x = bounds.right;
+			}
+		}
+
+		if (this.mapPosition.x >= bounds.right && this.position.x >= halfWidth) {
+			this.inBounds.x = false;
+
+			if (this.position.x > halfWidth * 3) {
+				this.position.x = -halfWidth;
+				this.mapPosition.x = bounds.left;
+			}
+		}
+
+		if (this.inBounds.x && this.position.x !== halfWidth) {
+			this.position.x = halfWidth;
+		}
 	}
 
 	update(time) {
@@ -31,10 +75,12 @@ class Pilgrim extends Sprite {
 
 		const speed = new Cool.Vector();
 
-		if (Object.values(this.input).filter(v => v).length > 2) return;
-			
+		// if (Object.values(this.input).filter(v => v).length > 2) return;
+		// let inputCount = 0;
+		// restrict three inputs?
+
 		if (this.input.up) {
-			if (this.mapPosition.y > gme.bounds.top) speed.y = -this.speed.y;
+			speed.y = -this.speed.y;
 			if (this.input.left || this.input.right) speed.y *= 0.71;
 			
 			if (this.input.left) state = 'up-left';
@@ -43,7 +89,7 @@ class Pilgrim extends Sprite {
 		}
 
 		if (this.input.down) {
-			if (this.mapPosition.y > gme.bounds.top) speed.y = this.speed.y;
+			speed.y = this.speed.y;
 			if (this.input.left || this.input.right) speed.y *= 0.71;
 			
 			if (this.input.left) state = 'down-left';
@@ -52,19 +98,29 @@ class Pilgrim extends Sprite {
 		}
 
 		if (this.input.left) {
-			if (this.mapPosition.x < gme.bounds.right) speed.x = -this.speed.x;
+			speed.x = -this.speed.x;
 			if (this.input.up || this.input.down) speed.x *= 0.71;
 			if (!this.input.up && !this.input.down) state = 'left';
 		}
 
 
 		if (this.input.right) {
-			if (this.mapPosition.x < gme.bounds.right) speed.x = this.speed.x;
+			speed.x = this.speed.x;
 			if (this.input.up || this.input.down) speed.x *= 0.71;
 			if (!this.input.up && !this.input.down) state = 'right';
 		}
 		
-		this.mapPosition.add(speed.multiply(time));
+
+		if (this.inBounds.x && this.inBounds.y) this.mapPosition.add(speed.multiply(time)).round();
+		else if (!this.inBounds.x && !this.inBounds.y) this.position.add(speed.multiply(time)).round();
+		else if (this.inBounds.x) {
+			this.mapPosition.x += Math.floor(speed.x * time);
+			this.position.y += Math.floor(speed.y * time);
+		} else if (this.inBounds.y) {
+			this.position.x += Math.floor(speed.x * time);
+			this.mapPosition.y += Math.floor(speed.y * time);
+		}
+		
 		this.animation.state = state;
 	}
 }

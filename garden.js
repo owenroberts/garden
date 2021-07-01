@@ -23,10 +23,19 @@ gme.load({
 let pilgrim;
 let userStarted = false;
 
+let bounds = {
+	top: -1000,
+	bottom: 1000,
+	right: 1000,
+	left: -1000,
+};
+
 const wSoundBtn = document.getElementById('with')
 wSoundBtn.addEventListener('click', userStart);
 const wOutSoundBtn = document.getElementById('out')
 wOutSoundBtn.addEventListener('click', userStart);
+
+let halfHeight, halfWidth; // update on size change ...
 
 function userStart() {
 	userStarted = true;
@@ -42,8 +51,8 @@ function start() {
 	document.getElementById('title').textContent = '~~~ start garden ~~~';
 
 	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.width / 2, gme.view.height / 2);
-	pilgrim.mapPosition.x = 450;
-	pilgrim.mapPosition.y = 270;
+	// pilgrim.mapPosition.x = 450; // why?
+	// pilgrim.mapPosition.y = 270;
 
 
 	for (const key in gme.data.scenery.entries) {
@@ -66,12 +75,24 @@ function start() {
 			gme.updateBounds(data.locations[i]);
 		}
 	}
+
+	halfHeight = Math.round(gme.view.height / 2);
+	halfWidth = Math.round(gme.view.width / 2);
+
+}
+
+function sizeCanvas() {
+	halfHeight = Math.round(gme.view.height / 2);
+	halfWidth = Math.round(gme.view.width / 2);
 }
 
 function update(timeElapsed) {
 	if (!userStarted) return;
 	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
+
+	pilgrim.checkBounds(bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
+
 	const offset = new Cool.Vector(gme.view.width - pilgrim.mapPosition.x, gme.view.height - pilgrim.mapPosition.y)
 	gme.scenes.current.update(offset);
 }
@@ -102,9 +123,9 @@ function keyDown(key) {
 			pilgrim.inputKey('down', true);
 			break;
 
-		case 'e':
-			// socket.emit('key interact', true);
-			break;
+		case 'g':
+			if (!userStarted) userStart();
+		break;
 	}
 }
 
@@ -125,10 +146,6 @@ function keyUp(key) {
 		case 's':
 		case 'down':
 			pilgrim.inputKey('down', false);
-			break;
-
-		case 'e':
-			// socket.emit('key interact', false);
 			break;
 	}
 }
