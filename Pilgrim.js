@@ -23,6 +23,9 @@ class Pilgrim extends Sprite {
 	}
 
 	checkBounds(bounds, halfHeight, halfWidth) {
+		this.inBounds.y = true;
+		this.inBounds.x = true;
+
 		if (this.mapPosition.y <= bounds.top && this.position.y <= halfHeight) {
 			this.inBounds.y = false;
 

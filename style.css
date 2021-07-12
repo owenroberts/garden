@@ -1,4 +1,9 @@
-* { margin: 0; padding: 0; }
+* { 
+	margin: 0; 
+	padding: 0; 
+	box-sizing: border-box;
+}
+
 html, body { width: 100%; height: 100%; }
 canvas { display: block; }
 
@@ -34,7 +39,6 @@ canvas { display: block; }
 	padding: 0.5em;
 	font-size: 1.5rem;
 }
-
 
 /* debug remove  */
 #log {
