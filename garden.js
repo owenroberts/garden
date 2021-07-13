@@ -66,13 +66,21 @@ function start() {
 
 	for (const key in gme.data.textures.entries) {
 		const data = gme.data.textures.entries[key];
-		gme.scenes.add(new Texture({
-			animation: gme.anims.textures[key],
-			locations: data.locations,
-			frame: 'index'
-		}), data.scenes);
+		// gme.scenes.add(new Texture({
+		// 	animation: gme.anims.textures[key],
+		// 	locations: data.locations,
+		// 	frame: 'index'
+		// }), data.scenes);
 		for (let i = 0; i < data.locations.length; i++) {
 			gme.updateBounds(data.locations[i]);
+
+			gme.scenes.add(new TextureEntity({
+				x: data.locations[i].x,
+				y: data.locations[i].y,
+				animation: gme.anims.textures[key],
+				stateIndex: i,
+				center: false,
+			}), data.scenes);
 		}
 	}
 
