@@ -11,7 +11,7 @@ const gme = new Game({
 	debug: true,
 	stats: true,
 	suspend: true,
-	scenes: ['game']
+	scenes: ['game'],
 });
 
 gme.load({ 
@@ -23,6 +23,8 @@ gme.load({
 let pilgrim;
 let userStarted = false;
 
+
+// debug
 let bounds = {
 	top: -1000,
 	bottom: 1000,
@@ -50,18 +52,35 @@ function start() {
 	document.getElementById('sound-splash').style.display = 'block';
 	document.getElementById('title').textContent = '~~~ start garden ~~~';
 
-	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.width / 2, gme.view.height / 2);
-	// pilgrim.mapPosition.x = 450; // why?
-	// pilgrim.mapPosition.y = 270;
+	for (const key in gme.data.scenery.entries) {
+		const { x, y } = gme.data.scenery.entries[key];
+		gme.updateBounds({ x: x, y: y });
+	}
 
+	for (const key in gme.data.textures.entries) {
+		const { locations } = gme.data.textures.entries[key];
+		for (let i = 0; i < locations.length; i++) {
+			gme.updateBounds(locations[i]);
+		}
+	}
+
+	gme.bounds.top += Math.round(gme.view.height / 2);
+	gme.bounds.bottom += Math.round(-gme.view.height / 2);
+	gme.bounds.left += Math.round(gme.view.width / 2);
+	gme.bounds.right += Math.round(-gme.view.width / 2);
+
+	
+	gme.scenes.game = new SHGScene(gme.bounds, gme.width, gme.height);
+
+
+	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.width / 2, gme.view.height / 2);
 
 	for (const key in gme.data.scenery.entries) {
 		const data = gme.data.scenery.entries[key];
 		const s = new Entity({ x: data.x, y: data.y });
 		s.addAnimation(gme.anims.scenery[key]);
 		s.animation.play();
-		gme.scenes.add(s, data.scenes);
-		gme.updateBounds(s.position);
+		gme.scenes.game.addSprite(s);
 	}
 
 	for (const key in gme.data.textures.entries) {
@@ -72,21 +91,22 @@ function start() {
 		// 	frame: 'index'
 		// }), data.scenes);
 		for (let i = 0; i < data.locations.length; i++) {
-			gme.updateBounds(data.locations[i]);
+			if (i <= gme.anims.textures[key].endFrame) {
+				gme.updateBounds(data.locations[i]);
 
-			gme.scenes.add(new TextureEntity({
-				x: data.locations[i].x,
-				y: data.locations[i].y,
-				animation: gme.anims.textures[key],
-				stateIndex: i,
-				center: false,
-			}), data.scenes);
+				gme.scenes.game.addSprite(new TextureEntity({
+					x: data.locations[i].x,
+					y: data.locations[i].y,
+					animation: gme.anims.textures[key],
+					stateIndex: i,
+				}));
+			}
 		}
 	}
 
+
 	halfHeight = Math.round(gme.view.height / 2);
 	halfWidth = Math.round(gme.view.width / 2);
-
 }
 
 function sizeCanvas() {
@@ -98,16 +118,16 @@ function update(timeElapsed) {
 	if (!userStarted) return;
 	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
 
-	pilgrim.checkBounds(bounds, halfHeight, halfWidth);
+	pilgrim.checkBounds(gme.bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
 
 	const offset = new Cool.Vector(gme.view.width - pilgrim.mapPosition.x, gme.view.height - pilgrim.mapPosition.y)
-	gme.scenes.current.update(offset);
+	gme.scenes.current.update(offset, [pilgrim.mapPosition.x - pilgrim.width / 2, pilgrim.mapPosition.y - pilgrim.height / 2]);
 }
 
 function draw() {
 	if (!userStarted) return;
-	gme.scenes.current.display();
+	gme.scenes.current.display([pilgrim.mapPosition.x - pilgrim.width / 2, pilgrim.mapPosition.y - pilgrim.height / 2]);
 	pilgrim.display();
 }
 

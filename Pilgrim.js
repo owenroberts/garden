@@ -69,6 +69,7 @@ class Pilgrim extends Sprite {
 		if (this.inBounds.x && this.position.x !== halfWidth) {
 			this.position.x = halfWidth;
 		}
+
 	}
 
 	update(time) {
