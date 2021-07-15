@@ -77,7 +77,11 @@ function start() {
 
 	for (const key in gme.data.scenery.entries) {
 		const data = gme.data.scenery.entries[key];
-		const s = new Entity({ x: data.x, y: data.y });
+		const s = new Entity({ 
+			x: data.x, 
+			y: data.y,
+
+		});
 		s.addAnimation(gme.anims.scenery[key]);
 		s.animation.play();
 		gme.scenes.game.addSprite(s);
@@ -112,6 +116,8 @@ function start() {
 function sizeCanvas() {
 	halfHeight = Math.round(gme.view.height / 2);
 	halfWidth = Math.round(gme.view.width / 2);
+
+	// update grid scene
 }
 
 function update(timeElapsed) {
@@ -121,13 +127,13 @@ function update(timeElapsed) {
 	pilgrim.checkBounds(gme.bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
 
-	const offset = new Cool.Vector(gme.view.width - pilgrim.mapPosition.x, gme.view.height - pilgrim.mapPosition.y)
-	gme.scenes.current.update(offset, [pilgrim.mapPosition.x - pilgrim.width / 2, pilgrim.mapPosition.y - pilgrim.height / 2]);
+	const offset = [gme.view.width - pilgrim.mapPosition[0], gme.view.height - pilgrim.mapPosition[1]];
+	gme.scenes.current.update(offset, [pilgrim.mapPosition[0] - pilgrim.width / 2, pilgrim.mapPosition[1] - pilgrim.height / 2]);
 }
 
 function draw() {
 	if (!userStarted) return;
-	gme.scenes.current.display([pilgrim.mapPosition.x - pilgrim.width / 2, pilgrim.mapPosition.y - pilgrim.height / 2]);
+	gme.scenes.current.display();
 	pilgrim.display();
 }
 
