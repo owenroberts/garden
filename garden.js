@@ -12,6 +12,12 @@ const gme = new Game({
 	stats: true,
 	suspend: true,
 	scenes: ['game'],
+	bounds: {
+		left: -5000,
+		top: -4000,
+		right: 5000,
+		bottom: 10000,
+	}
 });
 
 gme.load({ 
@@ -24,20 +30,13 @@ let pilgrim;
 let userStarted = false;
 
 
-// debug
-let bounds = {
-	top: -1000,
-	bottom: 1000,
-	right: 1000,
-	left: -1000,
-};
-
 const wSoundBtn = document.getElementById('with')
 wSoundBtn.addEventListener('click', userStart);
 const wOutSoundBtn = document.getElementById('out')
 wOutSoundBtn.addEventListener('click', userStart);
 
 let halfHeight, halfWidth; // update on size change ...
+let bg = new BackgroundColor(gme.canvas, gme.bounds.right - gme.bounds.left, gme.bounds.bottom - gme.bounds.top);
 
 function userStart() {
 	userStarted = true;
@@ -52,38 +51,21 @@ function start() {
 	document.getElementById('sound-splash').style.display = 'block';
 	document.getElementById('title').textContent = '~~~ start garden ~~~';
 
-	for (const key in gme.data.scenery.entries) {
-		const { x, y } = gme.data.scenery.entries[key];
-		gme.updateBounds({ x: x, y: y });
-	}
+	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.halfWidth, gme.view.halfHeight);
 
-	for (const key in gme.data.textures.entries) {
-		const { locations } = gme.data.textures.entries[key];
-		for (let i = 0; i < locations.length; i++) {
-			gme.updateBounds(locations[i]);
-		}
-	}
+	gme.bounds.top += Math.round(gme.halfHeight + pilgrim.height / 2);
+	gme.bounds.left += Math.round(gme.halfWidth + pilgrim.width / 2);
 
-	gme.bounds.top += Math.round(gme.view.height / 2);
-	gme.bounds.bottom += Math.round(-gme.view.height / 2);
-	gme.bounds.left += Math.round(gme.view.width / 2);
-	gme.bounds.right += Math.round(-gme.view.width / 2);
-
-	
 	gme.scenes.game = new SHGScene(gme.bounds, gme.width, gme.height);
-
-
-	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.width / 2, gme.view.height / 2);
 
 	for (const key in gme.data.scenery.entries) {
 		const data = gme.data.scenery.entries[key];
 		const s = new Entity({ 
 			x: data.x, 
 			y: data.y,
-
+			animation: gme.anims.scenery[key],
+			play: true,
 		});
-		s.addAnimation(gme.anims.scenery[key]);
-		s.animation.play();
 		gme.scenes.game.addSprite(s);
 	}
 
@@ -96,7 +78,6 @@ function start() {
 		// }), data.scenes);
 		for (let i = 0; i < data.locations.length; i++) {
 			if (i <= gme.anims.textures[key].endFrame) {
-				gme.updateBounds(data.locations[i]);
 
 				gme.scenes.game.addSprite(new TextureEntity({
 					x: data.locations[i].x,
@@ -135,6 +116,7 @@ function draw() {
 	if (!userStarted) return;
 	gme.scenes.current.display();
 	pilgrim.display();
+	bg.update(pilgrim.mapPosition);
 }
 
 /* events */
