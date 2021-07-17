@@ -36,7 +36,7 @@ const wOutSoundBtn = document.getElementById('out')
 wOutSoundBtn.addEventListener('click', userStart);
 
 let halfHeight, halfWidth; // update on size change ...
-let bg = new BackgroundColor(gme.canvas, gme.bounds.right - gme.bounds.left, gme.bounds.bottom - gme.bounds.top);
+let bg = new BackgroundColor(gme.canvas, gme.bounds);
 
 function userStart() {
 	userStarted = true;
@@ -116,7 +116,7 @@ function draw() {
 	if (!userStarted) return;
 	gme.scenes.current.display();
 	pilgrim.display();
-	bg.update(pilgrim.mapPosition);
+	// bg.update([pilgrim.mapPosition[0] - pilgrim.position[0], pilgrim.mapPosition[1] - pilgrim.position[1]]);
 }
 
 /* events */
