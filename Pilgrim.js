@@ -13,6 +13,16 @@ class Pilgrim extends Sprite {
 
 		this.input = { right: false, up: false, left: false, down: false };
 		this.inBounds = [true, true];
+
+		this.hasSFX = false;
+
+	}
+
+	addSFX(sfx) {
+		this.sfx = sfx;
+		this.sfxCount = 0;
+		this.sfxInterval = 13; // 24 / 2 + 1
+		this.hasSFX = true;
 	}
 
 	inputKey(key, state) {
@@ -102,7 +112,6 @@ class Pilgrim extends Sprite {
 			if (!this.input.up && !this.input.down) state = 'left';
 		}
 
-
 		if (this.input.right) {
 			speed[0] = this.speed[0];
 			if (this.input.up || this.input.down) speed[0] *= 0.71;
@@ -115,7 +124,19 @@ class Pilgrim extends Sprite {
 		if (this.inBounds[1]) this.mapPosition[1] += Math.floor(speed[1] * time);
 		else this.position[1] += Math.floor(speed[1] * time);
 		
-		
 		this.animation.state = state;
+
+		if (this.hasSFX) {
+			let totalSpeed = Math.abs(speed[0]) + Math.abs(speed[1]);
+			if (totalSpeed > 0 && this.sfxCount === 0) {
+				let index = Math.floor(Math.random() * this.sfx.length);
+				sfx[index].play();
+				this.sfxCount++;
+			} else if (totalSpeed === 0 || this.sfxCount === this.sfxInterval) {
+				this.sfxCount = 0;
+			} else {
+				this.sfxCount++;
+			}
+		}
 	}
 }

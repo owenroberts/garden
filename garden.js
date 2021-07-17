@@ -1,9 +1,12 @@
 /* what the hell am i doing */
 
+const isMobile = Cool.mobilecheck();
+if (isMobile) document.body.classList.add('mobile');
+
 const gme = new Game({
 	dps: 24,
 	lineWidth: 1,
-	zoom: 1.5,
+	zoom: isMobile ? 1 : 1.5,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	multiColor: true,
@@ -11,6 +14,7 @@ const gme = new Game({
 	debug: true,
 	stats: true,
 	suspend: true,
+	events: isMobile ? ['touch'] : ['keyboard'],
 	scenes: ['game'],
 	bounds: {
 		left: -5000,
@@ -26,20 +30,49 @@ gme.load({
 	sprites: 'data/sprites.json'
 }, false);
 
-let pilgrim;
+let pilgrim, sfx = [];
 let userStarted = false;
 
-
-const wSoundBtn = document.getElementById('with')
-wSoundBtn.addEventListener('click', userStart);
-const wOutSoundBtn = document.getElementById('out')
+const wSoundBtn = document.getElementById('with');
+wSoundBtn.addEventListener('click', loadSound);
+const wOutSoundBtn = document.getElementById('out');
 wOutSoundBtn.addEventListener('click', userStart);
 
 let halfHeight, halfWidth; // update on size change ...
-let bg = new BackgroundColor(gme.canvas, gme.bounds);
+// let bg = new BackgroundColor(gme.canvas, gme.bounds);
+
+
+// https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
+function loadSound() {
+	const audioFiles = [
+		'./sfx/foot_steps/beach/sand-1.mp3',
+		'./sfx/foot_steps/beach/sand-2.mp3',
+		'./sfx/foot_steps/beach/sand-3.mp3',
+		'./sfx/foot_steps/beach/sand-4.mp3',
+		'./sfx/foot_steps/beach/sand-5.mp3',
+	];
+
+	function preloadAudio(url) {
+		var audio = new Audio();
+		audio.addEventListener('canplaythrough', loadedAudio, false);
+		audio.src = url;
+		sfx.push(audio);
+	}
+
+	let loaded = 0;
+	function loadedAudio() {
+		loaded++;
+	    if (loaded === audioFiles.length) userStart(sfx);
+	}
+
+	for (let i = 0; i < audioFiles.length; i++) {
+		preloadAudio(audioFiles[i]);
+	}
+}
 
 function userStart() {
 	userStarted = true;
+	if (sfx.length) pilgrim.addSFX(sfx);
 	wSoundBtn.removeEventListener('click', userStart);
 	wOutSoundBtn.removeEventListener('click', userStart);
 	document.getElementById('splash').remove();
@@ -142,6 +175,9 @@ function keyDown(key) {
 		case 'g':
 			if (!userStarted) userStart();
 		break;
+		case 'h':
+			if (!userStarted) loadSound();
+		break;
 	}
 }
 
@@ -164,4 +200,59 @@ function keyUp(key) {
 			pilgrim.inputKey('down', false);
 			break;
 	}
+}
+
+/* mobile */
+var startX, startY, startTime;
+const swipeTime = 200;
+const threshold = 30, restraint = 100;
+
+function touchStart(ev) {
+	const touchobj = ev.changedTouches[0];
+	startX = touchobj.pageX;
+	startY = touchobj.pageY;
+	startTime = performance.now();
+
+	// console.log(startX, startY, startTime);
+}
+
+function touchMove(ev) {
+	const touchobj = ev.changedTouches[0];
+
+	const deltaX = startX - touchobj.pageX;
+	const deltaY = startY - touchobj.pageY;
+
+	if (Math.abs(deltaX) > threshold) {
+		if (deltaX < 0) {
+			pilgrim.inputKey('right', true);
+			pilgrim.inputKey('left', false);
+		}
+		else {
+			pilgrim.inputKey('left', true);
+			pilgrim.inputKey('right', false);
+		} 
+	} else {
+		pilgrim.inputKey('left', false);
+		pilgrim.inputKey('right', false);
+	}
+
+	if (Math.abs(deltaY) > threshold) {
+		if (deltaY < 0) {
+			pilgrim.inputKey('down', true);
+			pilgrim.inputKey('up', false);
+		} else {
+			pilgrim.inputKey('up', true);
+			pilgrim.inputKey('down', false);
+		}
+	} else {
+		pilgrim.inputKey('down', false);
+		pilgrim.inputKey('up', false);
+	}
+}
+
+function touchEnd(ev) {
+	pilgrim.inputKey('left', false);
+	pilgrim.inputKey('up', false);
+	pilgrim.inputKey('right', false);
+	pilgrim.inputKey('down', false);
 }

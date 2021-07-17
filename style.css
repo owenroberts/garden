@@ -20,14 +20,26 @@ canvas { display: block; }
     justify-content: center;
 }
 
+.mobile #splash {
+	padding:  0.5em;
+
+}
+
 #title {
 	font-size: 2em;
 	margin-bottom: 1em;
 }
 
+.mobile #title {
+	font-size:  1.5em;
+}
+
 #splash * {
 	font-family: verdana;
-	
+}
+
+.mobile #inner-splash {
+	text-align:  center;
 }
 
 #sound-splash {
@@ -39,6 +51,13 @@ canvas { display: block; }
 	padding: 0.5em;
 	font-size: 1.5rem;
 }
+
+.mobile #sound-splash button {
+	font-size:  1em;
+	margin-bottom:  0.5em;
+
+}
+
 
 /* debug remove  */
 #log {
