@@ -31,6 +31,7 @@ gme.load({
 }, false);
 
 let pilgrim, sfx = [];
+let charon;
 let userStarted = false;
 
 const wSoundBtn = document.getElementById('with');
@@ -80,11 +81,15 @@ function userStart() {
 
 function start() {
 
+	halfHeight = Math.round(gme.view.height / 2);
+	halfWidth = Math.round(gme.view.width / 2);
+
 	// done loading, show start/sound buttons
 	document.getElementById('sound-splash').style.display = 'block';
 	document.getElementById('title').textContent = '~~~ start garden ~~~';
 
 	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.halfWidth, gme.view.halfHeight);
+	charon = new Charon(-halfWidth, 300, gme.anims.sprites.charon);
 
 	gme.bounds.top += Math.round(gme.halfHeight + pilgrim.height / 2);
 	gme.bounds.left += Math.round(gme.halfWidth + pilgrim.width / 2);
@@ -123,8 +128,7 @@ function start() {
 	}
 
 
-	halfHeight = Math.round(gme.view.height / 2);
-	halfWidth = Math.round(gme.view.width / 2);
+	
 }
 
 function sizeCanvas() {
@@ -137,17 +141,21 @@ function sizeCanvas() {
 function update(timeElapsed) {
 	if (!userStarted) return;
 	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
-
 	pilgrim.checkBounds(gme.bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
 
 	const offset = [gme.view.width - pilgrim.mapPosition[0], gme.view.height - pilgrim.mapPosition[1]];
 	gme.scenes.current.update(offset, [pilgrim.mapPosition[0] - pilgrim.width / 2, pilgrim.mapPosition[1] - pilgrim.height / 2]);
+
+	charon.checkBounds(gme.bounds, halfWidth);
+	charon.update(offset, timeElapsed / gme.dps);
+
 }
 
 function draw() {
 	if (!userStarted) return;
 	gme.scenes.current.display();
+	charon.display();
 	pilgrim.display();
 	// bg.update([pilgrim.mapPosition[0] - pilgrim.position[0], pilgrim.mapPosition[1] - pilgrim.position[1]]);
 }

@@ -1,0 +1,32 @@
+/*
+	sprite that moves
+	not really entity bc that is just updated based on map movement ...
+*/
+
+class Charon extends Sprite {
+	constructor(x, y, animation, debug) {
+		super(x, y);
+		this.speed = [7, 0];
+		this.mapPosition = [x, y];
+		this.addAnimation(animation, () => {
+			this.animation.play();
+			console.log(this.animation, animation);
+		});
+
+		
+		this.center = true;
+	}
+
+	checkBounds(bounds, halfWidth) {
+		if (this.mapPosition[0] >= bounds.right + charon.width) {
+			this.mapPosition[0] = bounds.left - charon.width - halfWidth - halfWidth;
+
+		}
+	}
+
+	update(offset, time) {
+		this.mapPosition[0] += time * this.speed[0];
+		this.position[0] = this.mapPosition[0] + offset[0];
+		this.position[1] = this.mapPosition[1] + offset[1];
+	}
+}

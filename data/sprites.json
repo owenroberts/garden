@@ -1,5 +1,4 @@
 {
-	"pilgrim": {
-		"src": "/drawings/players/pilgrim.json"
-	}
+	"pilgrim": { "src": "/drawings/players/pilgrim.json" },
+	"charon": { "src": "/drawings/sprites/char.json" }
 }
