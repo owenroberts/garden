@@ -46,11 +46,50 @@ let halfHeight, halfWidth; // update on size change ...
 // https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
 function loadSound() {
 	const audioFiles = [
-		'./sfx/foot_steps/beach/sand-1.mp3',
-		'./sfx/foot_steps/beach/sand-2.mp3',
-		'./sfx/foot_steps/beach/sand-3.mp3',
-		'./sfx/foot_steps/beach/sand-4.mp3',
-		'./sfx/foot_steps/beach/sand-5.mp3',
+		'forest-1.mp3',
+		'forest-2.mp3',
+		'forest-3.mp3',
+		'forest-4.mp3',
+		'forest-5.mp3',
+		'forest-6.mp3',
+		'grass-0.mp3',
+		'grass-1.mp3',
+		'grass-2.mp3',
+		'grass-3.mp3',
+		'grass-4.mp3',
+		'grass-5.mp3',
+		'grass-6.mp3',
+		'grass-7.mp3',
+		'grass-8.mp3',
+		'grass-9.mp3',
+		'ice-1.mp3',
+		'ice-2.mp3',
+		'ice-3.mp3',
+		'ice-4.mp3',
+		'ice-5.mp3',
+		'mud-1.mp3',
+		'mud-2.mp3',
+		'mud-3.mp3',
+		'mud-4.mp3',
+		'mud-5.mp3',
+		'mud-6.mp3',
+		'mud-7.mp3',
+		'road-1.mp3',
+		'road-2.mp3',
+		'road-3.mp3',
+		'road-4.mp3',
+		'road-5.mp3',
+		'sand-1.mp3',
+		'sand-2.mp3',
+		'sand-3.mp3',
+		'sand-4.mp3',
+		'sand-5.mp3',
+		'water-1.mp3',
+		'water-2.mp3',
+		'water-3.mp3',
+		'water-4.mp3',
+		'water-5.mp3',
+
 	];
 
 	function preloadAudio(url) {
@@ -67,7 +106,7 @@ function loadSound() {
 	}
 
 	for (let i = 0; i < audioFiles.length; i++) {
-		preloadAudio(audioFiles[i]);
+		preloadAudio(`./sfx/foot_steps/${audioFiles[i]}`);
 	}
 }
 
@@ -126,9 +165,6 @@ function start() {
 			}
 		}
 	}
-
-
-	
 }
 
 function sizeCanvas() {

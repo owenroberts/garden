@@ -10,7 +10,6 @@ class Charon extends Sprite {
 		this.mapPosition = [x, y];
 		this.addAnimation(animation, () => {
 			this.animation.play();
-			console.log(this.animation, animation);
 		});
 
 		

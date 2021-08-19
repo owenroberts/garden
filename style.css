@@ -5,7 +5,12 @@
 }
 
 html, body { width: 100%; height: 100%; }
-canvas { display: block; }
+canvas { 
+	display: block; 
+	background: 
+		linear-gradient( rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 1) 25%, rgba(255, 255, 255, 0.95) 90%), 
+		url(noise.jpg);
+}
 
 #splash {
 	z-index: 1;
@@ -55,7 +60,6 @@ canvas { display: block; }
 .mobile #sound-splash button {
 	font-size:  1em;
 	margin-bottom:  0.5em;
-
 }
 
 

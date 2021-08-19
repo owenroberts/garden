@@ -18,7 +18,16 @@ class Pilgrim extends Sprite {
 	}
 
 	addSFX(sfx) {
-		this.sfx = sfx;
+		console.clear();
+		this.sfx = {};
+		sfx.forEach(clip => {
+			const f = clip.currentSrc.split('/').pop();
+			const type = f.split('-').shift();
+			if (!this.sfx[type]) this.sfx[type] = [];
+			this.sfx[type].push(clip);
+		})
+		console.log(this.sfx);
+		this.sfxType = 'water';
 		this.sfxCount = 0;
 		this.sfxInterval = 13; // 24 / 2 + 1
 		this.hasSFX = true;
@@ -125,17 +134,32 @@ class Pilgrim extends Sprite {
 		
 		this.animation.state = state;
 
-		if (this.hasSFX) {
-			let totalSpeed = Math.abs(speed[0]) + Math.abs(speed[1]);
-			if (totalSpeed > 0 && this.sfxCount === 0) {
-				let index = Math.floor(Math.random() * this.sfx.length);
-				sfx[index].play();
-				this.sfxCount++;
-			} else if (totalSpeed === 0 || this.sfxCount === this.sfxInterval) {
-				this.sfxCount = 0;
-			} else {
-				this.sfxCount++;
-			}
+		if (this.hasSFX) this.playSFX(speed);
+	}
+
+	playSFX(speed) {
+
+		// update type 
+		if (this.mapPosition[1] > 412 && this.mapPosition[1] < 800) this.sfxType = 'water';
+		else if (this.mapPosition[0] < 326 && this.mapPosition[1] < 412) this.sfxType = 'forest';
+		else if (this.mapPosition[0] < 326 && this.mapPosition[1] < 5000) this.sfxType = 'ice';
+		else if (this.mapPosition[0] < 326 && this.mapPosition[1] > 5000) this.sfxType = 'mud';
+		else if (this.mapPosition[0] > 326 && this.mapPosition[1] < -1240) this.sfxType = 'sand';
+		else if (this.mapPosition[0] > 326 && this.mapPosition[1] < 412) this.sfxType = 'grass';
+		else if (this.mapPosition[0] > 326 && this.mapPosition[1] < 5000) this.sfxType = 'grass';
+		else if (this.mapPosition[0] > 326 && this.mapPosition[1] > 5000) this.sfxType = 'road';
+		else this.sfxType = 'grass';
+
+
+		let totalSpeed = Math.abs(speed[0]) + Math.abs(speed[1]);
+		if (totalSpeed > 0 && this.sfxCount === 0) {
+			let index = Math.floor(Math.random() * this.sfx[this.sfxType].length);
+			this.sfx[this.sfxType][index].play();
+			this.sfxCount++;
+		} else if (totalSpeed === 0 || this.sfxCount === this.sfxInterval) {
+			this.sfxCount = 0;
+		} else {
+			this.sfxCount++;
 		}
 	}
 }
