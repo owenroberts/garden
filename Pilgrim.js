@@ -18,7 +18,6 @@ class Pilgrim extends Sprite {
 	}
 
 	addSFX(sfx) {
-		console.clear();
 		this.sfx = {};
 		sfx.forEach(clip => {
 			const f = clip.currentSrc.split('/').pop();
@@ -26,7 +25,6 @@ class Pilgrim extends Sprite {
 			if (!this.sfx[type]) this.sfx[type] = [];
 			this.sfx[type].push(clip);
 		})
-		console.log(this.sfx);
 		this.sfxType = 'water';
 		this.sfxCount = 0;
 		this.sfxInterval = 13; // 24 / 2 + 1

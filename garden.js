@@ -46,50 +46,54 @@ let halfHeight, halfWidth; // update on size change ...
 // https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
 function loadSound() {
 	const audioFiles = [
-		'forest-1.mp3',
-		'forest-2.mp3',
-		'forest-3.mp3',
-		'forest-4.mp3',
-		'forest-5.mp3',
-		'forest-6.mp3',
-		'grass-0.mp3',
-		'grass-1.mp3',
-		'grass-2.mp3',
-		'grass-3.mp3',
-		'grass-4.mp3',
-		'grass-5.mp3',
-		'grass-6.mp3',
-		'grass-7.mp3',
-		'grass-8.mp3',
-		'grass-9.mp3',
-		'ice-1.mp3',
-		'ice-2.mp3',
-		'ice-3.mp3',
-		'ice-4.mp3',
-		'ice-5.mp3',
-		'mud-1.mp3',
-		'mud-2.mp3',
-		'mud-3.mp3',
-		'mud-4.mp3',
-		'mud-5.mp3',
-		'mud-6.mp3',
-		'mud-7.mp3',
-		'road-1.mp3',
-		'road-2.mp3',
-		'road-3.mp3',
-		'road-4.mp3',
-		'road-5.mp3',
-		'sand-1.mp3',
-		'sand-2.mp3',
-		'sand-3.mp3',
-		'sand-4.mp3',
-		'sand-5.mp3',
-		'water-1.mp3',
-		'water-2.mp3',
-		'water-3.mp3',
-		'water-4.mp3',
-		'water-5.mp3',
-
+		'foot_steps/forest-1.mp3',
+		'foot_steps/forest-2.mp3',
+		'foot_steps/forest-3.mp3',
+		'foot_steps/forest-4.mp3',
+		'foot_steps/forest-5.mp3',
+		'foot_steps/forest-6.mp3',
+		'foot_steps/grass-0.mp3',
+		'foot_steps/grass-1.mp3',
+		'foot_steps/grass-2.mp3',
+		'foot_steps/grass-3.mp3',
+		'foot_steps/grass-4.mp3',
+		'foot_steps/grass-5.mp3',
+		'foot_steps/grass-6.mp3',
+		'foot_steps/grass-7.mp3',
+		'foot_steps/grass-8.mp3',
+		'foot_steps/grass-9.mp3',
+		'foot_steps/ice-1.mp3',
+		'foot_steps/ice-2.mp3',
+		'foot_steps/ice-3.mp3',
+		'foot_steps/ice-4.mp3',
+		'foot_steps/ice-5.mp3',
+		'foot_steps/mud-1.mp3',
+		'foot_steps/mud-2.mp3',
+		'foot_steps/mud-3.mp3',
+		'foot_steps/mud-4.mp3',
+		'foot_steps/mud-5.mp3',
+		'foot_steps/mud-6.mp3',
+		'foot_steps/mud-7.mp3',
+		'foot_steps/road-1.mp3',
+		'foot_steps/road-2.mp3',
+		'foot_steps/road-3.mp3',
+		'foot_steps/road-4.mp3',
+		'foot_steps/road-5.mp3',
+		'foot_steps/sand-1.mp3',
+		'foot_steps/sand-2.mp3',
+		'foot_steps/sand-3.mp3',
+		'foot_steps/sand-4.mp3',
+		'foot_steps/sand-5.mp3',
+		'foot_steps/water-1.mp3',
+		'foot_steps/water-2.mp3',
+		'foot_steps/water-3.mp3',
+		'foot_steps/water-4.mp3',
+		'foot_steps/water-5.mp3',
+		'paddles/paddle-1.mp3',
+		'paddles/paddle-2.mp3',
+		'paddles/paddle-3.mp3',
+		'paddles/paddle-4.mp3',
+		'paddles/paddle-5.mp3',
 	];
 
 	function preloadAudio(url) {
@@ -102,17 +106,20 @@ function loadSound() {
 	let loaded = 0;
 	function loadedAudio() {
 		loaded++;
-	    if (loaded === audioFiles.length) userStart(sfx);
+	    if (loaded === audioFiles.length) userStart();
 	}
 
 	for (let i = 0; i < audioFiles.length; i++) {
-		preloadAudio(`./sfx/foot_steps/${audioFiles[i]}`);
+		preloadAudio(`./sfx/${audioFiles[i]}`);
 	}
 }
 
 function userStart() {
 	userStarted = true;
-	if (sfx.length) pilgrim.addSFX(sfx);
+	if (sfx.length) {
+		pilgrim.addSFX(sfx);
+		charon.addSFX(sfx);
+	}
 	wSoundBtn.removeEventListener('click', userStart);
 	wOutSoundBtn.removeEventListener('click', userStart);
 	document.getElementById('splash').remove();
@@ -185,7 +192,6 @@ function update(timeElapsed) {
 
 	charon.checkBounds(gme.bounds, halfWidth);
 	charon.update(offset, timeElapsed / gme.dps);
-
 }
 
 function draw() {
