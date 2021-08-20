@@ -1,1 +1,8 @@
-{}
+{
+	"start": { "src": "/drawings/ui/start.json" },
+	"wSound": { "src": "/drawings/ui/w_sound.json" },
+	"woutSound": { "src": "/drawings/ui/wout_sound.json" },
+	"what": { "src": "/drawings/ui/what.json" },
+	"mobileInstructions": { "src": "/drawings/ui/mobile-instructions.json" },
+	"desktopInstructions": { "src": "/drawings/ui/desktop-instructions.json" }
+}

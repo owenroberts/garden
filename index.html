@@ -19,25 +19,25 @@
   			</div>
 		</noscript>
 		<div id="inner-splash">
-			<p id="title">~~~ loading garden ~~~</p>
-			<div id="sound-splash">
+			<p id="title"> loading garden </p>
+<!-- 			<div id="sound-splash">
 				<button id="out">without sound</button>
 				<button id="with">with sound</button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 
 	<!-- doodoo music -->
 	<script src="./doodoo/tone/Tone.js"></script>
 	<script type="module">
-		import Doodoo from './doodoo/doodoo.js';
-		document.getElementById('with').addEventListener('click', () => {
-			window.doodoo = new Doodoo('C4', [
-				'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
-				'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
-			]);
+		// import Doodoo from './doodoo/doodoo.js';
+		// document.getElementById('with').addEventListener('click', () => {
+		// 	window.doodoo = new Doodoo('C4', [
+		// 		'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
+		// 		'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
+		// 	]);
 			
-		});
+		// });
 	</script>
 
 	<script src="lines/build/lib/stats.js/build/stats.min.js"></script>
@@ -46,7 +46,7 @@
 
 	<script src="Charon.js"></script>
 	<script src="Pilgrim.js"></script>
-	<script src="garden.js"></script>
+	<script src="garden.js" type="module"></script>
 	
 </body>
 </html>

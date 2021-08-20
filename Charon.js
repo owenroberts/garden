@@ -31,8 +31,8 @@ class Charon extends Sprite {
 
 
 	checkBounds(bounds, halfWidth) {
-		if (this.mapPosition[0] >= bounds.right + charon.width) {
-			this.mapPosition[0] = bounds.left - charon.width - halfWidth - halfWidth;
+		if (this.mapPosition[0] >= bounds.right + this.width) {
+			this.mapPosition[0] = bounds.left - this.width - halfWidth - halfWidth;
 
 		}
 	}

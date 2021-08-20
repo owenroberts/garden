@@ -1,4 +1,13 @@
 /* what the hell am i doing */
+import Doodoo from './doodoo/doodoo.js';
+
+const title = document.getElementById('title');
+function loadingAnimation() {
+	let t = '~' + title.textContent + '~';
+	title.textContent = t;
+}
+
+let loadingInterval = setInterval(loadingAnimation, 1000 / 12);
 
 const isMobile = Cool.mobilecheck();
 if (isMobile) document.body.classList.add('mobile');
@@ -11,11 +20,11 @@ const gme = new Game({
 	height: window.innerHeight,
 	multiColor: true,
 	checkRetina: true,
-	debug: true,
-	stats: true,
+	// debug: true,
+	// stats: true,
 	suspend: true,
-	events: isMobile ? ['touch'] : ['keyboard'],
-	scenes: ['game'],
+	events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
+	scenes: ['game', 'splash'],
 	bounds: {
 		left: -5000,
 		top: -4000,
@@ -27,24 +36,17 @@ const gme = new Game({
 gme.load({ 
 	scenery: 'data/scenery.json',
 	textures: 'data/textures.json',
-	sprites: 'data/sprites.json'
+	sprites: 'data/sprites.json',
+	ui: 'data/ui.json',
 }, false);
 
 let pilgrim, sfx = [];
 let charon;
 let userStarted = false;
-
-const wSoundBtn = document.getElementById('with');
-wSoundBtn.addEventListener('click', loadSound);
-const wOutSoundBtn = document.getElementById('out');
-wOutSoundBtn.addEventListener('click', userStart);
-
 let halfHeight, halfWidth; // update on size change ...
-// let bg = new BackgroundColor(gme.canvas, gme.bounds);
 
-
-// https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
 function loadSound() {
+	// https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
 	const audioFiles = [
 		'foot_steps/forest-1.mp3',
 		'foot_steps/forest-2.mp3',
@@ -89,6 +91,12 @@ function loadSound() {
 		'foot_steps/water-3.mp3',
 		'foot_steps/water-4.mp3',
 		'foot_steps/water-5.mp3',
+		'foot_steps/wind-1.mp3',
+		'foot_steps/wind-2.mp3',
+		'foot_steps/wind-3.mp3',
+		'foot_steps/wind-4.mp3',
+		'foot_steps/wind-5.mp3',
+		'foot_steps/wind-6.mp3',
 		'paddles/paddle-1.mp3',
 		'paddles/paddle-2.mp3',
 		'paddles/paddle-3.mp3',
@@ -112,6 +120,11 @@ function loadSound() {
 	for (let i = 0; i < audioFiles.length; i++) {
 		preloadAudio(`./sfx/${audioFiles[i]}`);
 	}
+
+	let doodoo = new Doodoo('C4', [
+		'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
+		'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
+	]);
 }
 
 function userStart() {
@@ -120,19 +133,82 @@ function userStart() {
 		pilgrim.addSFX(sfx);
 		charon.addSFX(sfx);
 	}
-	wSoundBtn.removeEventListener('click', userStart);
-	wOutSoundBtn.removeEventListener('click', userStart);
-	document.getElementById('splash').remove();
+	gme.scenes.current = 'game';
+	// wSoundBtn.removeEventListener('click', userStart);
+	// wOutSoundBtn.removeEventListener('click', userStart);
 }
 
-function start() {
+window.start = function() {
 
 	halfHeight = Math.round(gme.view.height / 2);
 	halfWidth = Math.round(gme.view.width / 2);
 
 	// done loading, show start/sound buttons
-	document.getElementById('sound-splash').style.display = 'block';
-	document.getElementById('title').textContent = '~~~ start garden ~~~';
+	// document.getElementById('sound-splash').style.display = 'block';
+	document.getElementById('splash').remove();
+	clearInterval(loadingInterval);
+	
+	let splash = new UI({
+		x: 0.5,
+		y: isMobile ? 128 : 0.25,
+		animation: gme.anims.ui.start,
+	});
+	gme.scenes.splash.addToDisplay(splash);
+
+	let desktop = new UI({
+		x: 0.5,
+		y: isMobile ? 128 : 0.25,
+		animation: gme.anims.ui.desktopInstructions,
+	});
+	desktop.isActive = false;
+	gme.scenes.splash.addToDisplay(desktop);
+
+	let mobile = new UI({
+		x: 0.5,
+		y: isMobile ? 128 : 0.25,
+		animation: gme.anims.ui.mobileInstructions,
+	});
+	mobile.isActive = false;
+	gme.scenes.splash.addToDisplay(mobile);
+
+	gme.scenes.splash.addUI(new UI({
+		x: isMobile ? 0.5 : 0.3,
+		y: isMobile ? -256 - 64 : 0.6,
+		isButton: true,
+		animation: gme.anims.ui.wSound,
+		onClick: loadSound,
+	}));
+	
+	gme.scenes.splash.addUI(new UI({
+		x: isMobile ? 0.5 : 0.7,
+		y: isMobile ? -64 - 128 : 0.6,
+		animation: gme.anims.ui.woutSound,
+		isButton: true,
+		onClick: userStart,
+	}));
+
+	let isWhat = false;
+	gme.scenes.splash.addUI(new UI({
+		x: 0.5,
+		y: isMobile ? -64 : 0.9,
+		animation: gme.anims.ui.what,
+		isButton: true,
+		onClick: () => {
+			if (isWhat) {
+				splash.isActive = true;
+				if (isMobile) mobile.isActive = false;
+				else desktop.isActive = false;
+			} else {
+				splash.isActive = false;
+				if (isMobile) mobile.isActive = true;
+				else desktop.isActive = true;
+			}
+			isWhat = !isWhat;
+
+		},
+	}));
+
+	gme.scenes.current = 'splash';
 
 	pilgrim = new Pilgrim(gme.anims.sprites.pilgrim, gme.view.halfWidth, gme.view.halfHeight);
 	charon = new Charon(-halfWidth, 300, gme.anims.sprites.charon);
@@ -174,15 +250,17 @@ function start() {
 	}
 }
 
-function sizeCanvas() {
-	halfHeight = Math.round(gme.view.height / 2);
-	halfWidth = Math.round(gme.view.width / 2);
 
-	// update grid scene
-}
+// maybe some day
+// window.sizeCanvas = function() {
+// 	halfHeight = Math.round(gme.view.height / 2);
+// 	halfWidth = Math.round(gme.view.width / 2);
 
-function update(timeElapsed) {
-	if (!userStarted) return;
+// 	// update grid scene
+// }
+
+window.update = function(timeElapsed) {
+	// if (!userStarted) return;
 	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
 	pilgrim.checkBounds(gme.bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
@@ -194,16 +272,17 @@ function update(timeElapsed) {
 	charon.update(offset, timeElapsed / gme.dps);
 }
 
-function draw() {
-	if (!userStarted) return;
+window.draw = function() {
+	// if (!userStarted) return;
 	gme.scenes.current.display();
-	charon.display();
-	pilgrim.display();
-	// bg.update([pilgrim.mapPosition[0] - pilgrim.position[0], pilgrim.mapPosition[1] - pilgrim.position[1]]);
+	if (gme.scenes.currentName === 'game') {
+		charon.display();
+		pilgrim.display();
+	}
 }
 
 /* events */
-function keyDown(key) {
+window.keyDown = function(key) {
 	switch (key) {
 		case 'a':
 		case 'left':
@@ -231,7 +310,7 @@ function keyDown(key) {
 	}
 }
 
-function keyUp(key) {
+window.keyUp = function(key) {
 	switch (key) {
 		case 'a':
 		case 'left':
@@ -252,21 +331,49 @@ function keyUp(key) {
 	}
 }
 
+window.mouseMoved = function(x, y) {
+	if (gme.scenes.currentName === 'splash') {
+		gme.scenes.current.mouseMoved(x, y);
+	}
+}
+
+window.mouseDown = function(x, y) {
+	if (gme.scenes.currentName === 'splash') {
+		gme.scenes.current.mouseDown(x, y);
+	}
+}
+
+
+window.mouseUp = function(x, y) {
+	if (gme.scenes.currentName === 'splash') {
+		gme.scenes.current.mouseUp(x, y);
+	}
+}
+
+
 /* mobile */
 var startX, startY, startTime;
 const swipeTime = 200;
 const threshold = 30, restraint = 100;
 
-function touchStart(ev) {
+window.touchStart = function(ev) {
+
 	const touchobj = ev.changedTouches[0];
 	startX = touchobj.pageX;
 	startY = touchobj.pageY;
+
+	if (gme.scenes.currentName === 'splash') {
+		gme.scenes.current.mouseDown(startX, startY);
+		return;
+	}
+
+	
 	startTime = performance.now();
 
 	// console.log(startX, startY, startTime);
 }
 
-function touchMove(ev) {
+window.touchMove = function(ev) {
 	const touchobj = ev.changedTouches[0];
 
 	const deltaX = startX - touchobj.pageX;
@@ -300,9 +407,16 @@ function touchMove(ev) {
 	}
 }
 
-function touchEnd(ev) {
+window.touchEnd = function(ev) {
+
+	if (gme.scenes.currentName === 'splash') {
+		gme.scenes.current.mouseUp(startX, startY);
+		return;
+	}
+
 	pilgrim.inputKey('left', false);
 	pilgrim.inputKey('up', false);
 	pilgrim.inputKey('right', false);
 	pilgrim.inputKey('down', false);
+
 }

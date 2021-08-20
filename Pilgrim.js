@@ -139,6 +139,7 @@ class Pilgrim extends Sprite {
 
 		// update type 
 		if (this.mapPosition[1] > 412 && this.mapPosition[1] < 800) this.sfxType = 'water';
+		else if (this.mapPosition[1] < -2673) this.sfxType = 'wind';
 		else if (this.mapPosition[0] < 326 && this.mapPosition[1] < 412) this.sfxType = 'forest';
 		else if (this.mapPosition[0] < 326 && this.mapPosition[1] < 5000) this.sfxType = 'ice';
 		else if (this.mapPosition[0] < 326 && this.mapPosition[1] > 5000) this.sfxType = 'mud';
@@ -159,5 +160,6 @@ class Pilgrim extends Sprite {
 		} else {
 			this.sfxCount++;
 		}
+
 	}
 }
