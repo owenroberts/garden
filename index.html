@@ -1,11 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>game</title>
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<link href="css/style.css" rel="stylesheet" type="text/css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<link rel="icon" href="favicon.ico">
+	<link rel="icon" href="icons/favicon.ico">
+
+
+	<!-- Primary Meta Tags -->
+	<title>~ garden ~ by owen ribbit ~</title>
+	<meta name="title" content="~ garden ~ by owen ribbit ~">
+	<meta name="description" content="garden is a game by owen ribbit">
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://garden.owen.cool/">
+	<meta property="og:title" content="~ garden ~ by owen ribbit ~">
+	<meta property="og:description" content="garden is a game by owen ribbit">
+	<meta property="og:image" content="https://garden.owen.cool/icons/garden_title.gif">
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image">
+	<meta property="twitter:url" content="https://garden.owen.cool/">
+	<meta property="twitter:title" content="~ garden ~ by owen ribbit ~">
+	<meta property="twitter:description" content="garden is a game by owen ribbit">
+	<meta property="twitter:image" content="https://garden.owen.cool/icons/garden_title.gif">
+
 </head>
 <body>
 	<div id="log"></div>
@@ -20,32 +40,17 @@
 		</noscript>
 		<div id="inner-splash">
 			<p id="title"> loading garden </p>
-<!-- 			<div id="sound-splash">
-				<button id="out">without sound</button>
-				<button id="with">with sound</button>
-			</div> -->
 		</div>
 	</div>
 
 	<!-- doodoo music -->
 	<script src="./doodoo/tone/Tone.js"></script>
-	<script type="module">
-		// import Doodoo from './doodoo/doodoo.js';
-		// document.getElementById('with').addEventListener('click', () => {
-		// 	window.doodoo = new Doodoo('C4', [
-		// 		'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
-		// 		'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
-		// 	]);
-			
-		// });
-	</script>
-
-	<script src="lines/build/lib/stats.js/build/stats.min.js"></script>
+	<!-- <script src="lines/build/lib/stats.js/build/stats.min.js"></script> -->
 	<script src="lines/build/base.min.js"></script>
 	<script src="lines/build/game.min.js"></script>
 
-	<script src="Charon.js"></script>
-	<script src="Pilgrim.js"></script>
+	<script src="js/Charon.js"></script>
+	<script src="js/Pilgrim.js"></script>
 	<script src="garden.js" type="module"></script>
 	
 </body>
