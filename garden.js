@@ -1,5 +1,5 @@
 /* what the hell am i doing */
-import Doodoo from './doodoo/doodoo.js';
+import Doodoo from './dist/doodoo/doodoo.js';
 
 const title = document.getElementById('title');
 function loadingAnimation() {
