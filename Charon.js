@@ -6,7 +6,7 @@
 class Charon extends Sprite {
 	constructor(x, y, animation, debug) {
 		super(x, y);
-		this.speed = [7, 0];
+		this.speed = [3, 0];
 		this.mapPosition = [x, y];
 		this.addAnimation(animation, () => {
 			this.animation.play();
@@ -25,10 +25,9 @@ class Charon extends Sprite {
 			if (type === 'paddle') this.sfx.push(clip);
 		})
 		this.sfxCount = 0;
-		this.sfxInterval = 48; // 24 / 2 + 1
+		this.sfxInterval = 64; // 24 / 2 + 1
 		this.hasSFX = true;
 	}
-
 
 	checkBounds(bounds, halfWidth) {
 		if (this.mapPosition[0] >= bounds.right + this.width) {

@@ -56,9 +56,6 @@ function loadSound() {
 		'foot_steps/forest-6.mp3',
 		'foot_steps/grass-0.mp3',
 		'foot_steps/grass-1.mp3',
-		'foot_steps/grass-2.mp3',
-		'foot_steps/grass-3.mp3',
-		'foot_steps/grass-4.mp3',
 		'foot_steps/grass-5.mp3',
 		'foot_steps/grass-6.mp3',
 		'foot_steps/grass-7.mp3',
@@ -214,7 +211,7 @@ window.start = function() {
 	charon = new Charon(-halfWidth, 300, gme.anims.sprites.charon);
 
 	gme.bounds.top += Math.round(gme.halfHeight + pilgrim.height / 2);
-	gme.bounds.left += Math.round(gme.halfWidth + pilgrim.width / 2);
+	gme.bounds.left += Math.round(gme.halfWidth + pilgrim.width);
 
 	gme.scenes.game = new SHGScene(gme.bounds, gme.width, gme.height);
 
@@ -248,20 +245,9 @@ window.start = function() {
 			}
 		}
 	}
-}
-
-
-// maybe some day
-// window.sizeCanvas = function() {
-// 	halfHeight = Math.round(gme.view.height / 2);
-// 	halfWidth = Math.round(gme.view.width / 2);
-
-// 	// update grid scene
-// }
+};
 
 window.update = function(timeElapsed) {
-	// if (!userStarted) return;
-	// console.log(timeElapsed / gme.dps); // how much more time has elapsed
 	pilgrim.checkBounds(gme.bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
 
@@ -269,17 +255,16 @@ window.update = function(timeElapsed) {
 	gme.scenes.current.update(offset, [pilgrim.mapPosition[0] - pilgrim.width / 2, pilgrim.mapPosition[1] - pilgrim.height / 2]);
 
 	charon.checkBounds(gme.bounds, halfWidth);
-	charon.update(offset, timeElapsed / gme.dps);
-}
+	if (gme.scenes.currentName === 'game') charon.update(offset, timeElapsed / gme.dps);
+};
 
 window.draw = function() {
-	// if (!userStarted) return;
 	gme.scenes.current.display();
 	if (gme.scenes.currentName === 'game') {
 		charon.display();
 		pilgrim.display();
 	}
-}
+};
 
 /* events */
 window.keyDown = function(key) {
@@ -308,7 +293,7 @@ window.keyDown = function(key) {
 			if (!userStarted) loadSound();
 		break;
 	}
-}
+};
 
 window.keyUp = function(key) {
 	switch (key) {
@@ -329,26 +314,26 @@ window.keyUp = function(key) {
 			pilgrim.inputKey('down', false);
 			break;
 	}
-}
+};
 
 window.mouseMoved = function(x, y) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseMoved(x, y);
 	}
-}
+};
 
 window.mouseDown = function(x, y) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseDown(x, y);
 	}
-}
+};
 
 
 window.mouseUp = function(x, y) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseUp(x, y);
 	}
-}
+};
 
 
 /* mobile */

@@ -6,7 +6,7 @@ class Pilgrim extends Sprite {
 		this.center = true; /* need better name */
 		
 		this.debug = debug || false;
-		this.speed = [8, 8];
+		this.speed = [6, 6];
 		
 		this.addAnimation(animation);
 		this.animation.state = 'idle';
@@ -27,12 +27,13 @@ class Pilgrim extends Sprite {
 		})
 		this.sfxType = 'water';
 		this.sfxCount = 0;
-		this.sfxInterval = 13; // 24 / 2 + 1
+		this.sfxInterval = 18; // 24 / 2 + 1
 		this.hasSFX = true;
 	}
 
 	inputKey(key, state) {
 		this.input[key] = state;
+		// console.log('mapPosition', ...this.mapPosition);
 	}
 
 	checkBounds(bounds, halfHeight, halfWidth) {
@@ -140,9 +141,12 @@ class Pilgrim extends Sprite {
 		// update type 
 		if (this.mapPosition[1] > 412 && this.mapPosition[1] < 800) this.sfxType = 'water';
 		else if (this.mapPosition[1] < -2673) this.sfxType = 'wind';
+		else if (this.mapPosition[0] > -4245 && this.mapPosition[0] < -2700 &&
+				this.mapPosition[1] > 4939 && this.mapPosition[1] < 6079) this.sfxType = 'ice';
+		
 		else if (this.mapPosition[0] < 326 && this.mapPosition[1] < 412) this.sfxType = 'forest';
-		else if (this.mapPosition[0] < 326 && this.mapPosition[1] < 5000) this.sfxType = 'ice';
-		else if (this.mapPosition[0] < 326 && this.mapPosition[1] > 5000) this.sfxType = 'mud';
+		else if (this.mapPosition[0] < 326) this.sfxType = 'mud';
+		
 		else if (this.mapPosition[0] > 326 && this.mapPosition[1] < -1240) this.sfxType = 'sand';
 		else if (this.mapPosition[0] > 326 && this.mapPosition[1] < 412) this.sfxType = 'grass';
 		else if (this.mapPosition[0] > 326 && this.mapPosition[1] < 5000) this.sfxType = 'grass';
@@ -160,6 +164,5 @@ class Pilgrim extends Sprite {
 		} else {
 			this.sfxCount++;
 		}
-
 	}
 }
