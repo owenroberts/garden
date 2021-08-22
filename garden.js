@@ -1,5 +1,5 @@
 /* what the hell am i doing */
-import Doodoo from './dist/doodoo/doodoo.js';
+import Doodoo from './doodoo/doodoo.js';
 
 const title = document.getElementById('title');
 function loadingAnimation() {
@@ -24,7 +24,7 @@ const gme = new Game({
 	// stats: true,
 	suspend: true,
 	events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
-	scenes: ['game', 'splash'],
+	scenes: ['game', 'splash', 'loading'],
 	bounds: {
 		left: -5000,
 		top: -4000,
@@ -46,6 +46,7 @@ let userStarted = false;
 let halfHeight, halfWidth; // update on size change ...
 
 function loadSound() {
+	gme.scenes.current = 'loading';
 	// https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
 	const audioFiles = [
 		'foot_steps/forest-1.mp3',
@@ -111,17 +112,32 @@ function loadSound() {
 	let loaded = 0;
 	function loadedAudio() {
 		loaded++;
-	    if (loaded === audioFiles.length) userStart();
+	    // if (loaded === audioFiles.length) userStart();
 	}
 
 	for (let i = 0; i < audioFiles.length; i++) {
 		preloadAudio(`./sfx/${audioFiles[i]}`);
 	}
 
-	let doodoo = new Doodoo('C4', [
-		'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
-		'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
-	]);
+	let doodooLoaded = false;
+	let doodoo = new Doodoo({
+		tonic: 'C4', 
+		parts: [
+			'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
+			'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
+		]},
+		function() {
+			console.log('doodoo loaded');
+			doodooLoaded = true;
+		}
+	);
+
+	const loader = setInterval(() => {
+		if (loaded === audioFiles.length && doodooLoaded) {
+			clearInterval(loader);
+			userStart();
+		}
+	}, 1000 / 30);
 }
 
 function userStart() {
@@ -131,8 +147,6 @@ function userStart() {
 		charon.addSFX(sfx);
 	}
 	gme.scenes.current = 'game';
-	// wSoundBtn.removeEventListener('click', userStart);
-	// wOutSoundBtn.removeEventListener('click', userStart);
 }
 
 window.start = function() {
@@ -151,6 +165,13 @@ window.start = function() {
 		animation: gme.anims.ui.start,
 	});
 	gme.scenes.splash.addToDisplay(splash);
+
+	let loading = new UI({
+		x: 0.5,
+		y: 0.5,
+		animation: gme.anims.ui.loading,
+	});
+	gme.scenes.loading.addToDisplay(loading);
 
 	let desktop = new UI({
 		x: 0.5,
@@ -228,14 +249,8 @@ window.start = function() {
 
 	for (const key in gme.data.textures.entries) {
 		const data = gme.data.textures.entries[key];
-		// gme.scenes.add(new Texture({
-		// 	animation: gme.anims.textures[key],
-		// 	locations: data.locations,
-		// 	frame: 'index'
-		// }), data.scenes);
 		for (let i = 0; i < data.locations.length; i++) {
 			if (i <= gme.anims.textures[key].endFrame) {
-
 				gme.scenes.game.addSprite(new TextureEntity({
 					x: data.locations[i].x,
 					y: data.locations[i].y,
@@ -335,7 +350,6 @@ window.mouseUp = function(x, y) {
 	}
 };
 
-
 /* mobile */
 var startX, startY, startTime;
 const swipeTime = 200;
@@ -356,7 +370,7 @@ window.touchStart = function(ev) {
 	startTime = performance.now();
 
 	// console.log(startX, startY, startTime);
-}
+};
 
 window.touchMove = function(ev) {
 	const touchobj = ev.changedTouches[0];
@@ -390,7 +404,7 @@ window.touchMove = function(ev) {
 		pilgrim.inputKey('down', false);
 		pilgrim.inputKey('up', false);
 	}
-}
+};
 
 window.touchEnd = function(ev) {
 
@@ -403,5 +417,4 @@ window.touchEnd = function(ev) {
 	pilgrim.inputKey('up', false);
 	pilgrim.inputKey('right', false);
 	pilgrim.inputKey('down', false);
-
-}
+};

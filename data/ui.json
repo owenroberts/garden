@@ -4,5 +4,6 @@
 	"woutSound": { "src": "/drawings/ui/wout_sound.json" },
 	"what": { "src": "/drawings/ui/what.json" },
 	"mobileInstructions": { "src": "/drawings/ui/mobile-instructions.json" },
-	"desktopInstructions": { "src": "/drawings/ui/desktop-instructions.json" }
+	"desktopInstructions": { "src": "/drawings/ui/desktop-instructions.json" },
+	"loading": { "src": "/drawings/ui/loading.json" }
 }
