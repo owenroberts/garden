@@ -1,5 +1,5 @@
 /* what the hell am i doing */
-import Doodoo from './doodoo/doodoo.js';
+import Doodoo from './dist/doodoo/doodoo.js';
 
 const title = document.getElementById('title');
 function loadingAnimation() {
@@ -337,10 +337,11 @@ window.mouseMoved = function(x, y) {
 	}
 };
 
-window.mouseDown = function(x, y) {
+window.mouseDown = function(x, y, button) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseDown(x, y);
 	}
+	if (button === 3) blurHandler();
 };
 
 
@@ -418,3 +419,12 @@ window.touchEnd = function(ev) {
 	pilgrim.inputKey('right', false);
 	pilgrim.inputKey('down', false);
 };
+
+// stop walking when user leaves
+function blurHandler() {
+	for (const k in pilgrim.input) {
+		pilgrim.input[k] = false;
+	}
+}
+
+window.addEventListener('blur', blurHandler);

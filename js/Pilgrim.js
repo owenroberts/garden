@@ -15,6 +15,19 @@ class Pilgrim extends Sprite {
 		this.inBounds = [true, true];
 
 		this.hasSFX = false;
+
+		// stop walking when user leaves
+		function blurHandler() {
+			console.log('blur');
+			for (const k in this.input) {
+				console.log(k);
+				this.input[k] = false;
+			}
+		}
+
+		window.addEventListener('blur', blurHandler);
+
+
 	}
 
 	addSFX(sfx) {
