@@ -357,7 +357,6 @@ const swipeTime = 200;
 const threshold = 30, restraint = 100;
 
 window.touchStart = function(ev) {
-
 	const touchobj = ev.changedTouches[0];
 	startX = touchobj.pageX;
 	startY = touchobj.pageY;
@@ -367,10 +366,7 @@ window.touchStart = function(ev) {
 		return;
 	}
 
-	
 	startTime = performance.now();
-
-	// console.log(startX, startY, startTime);
 };
 
 window.touchMove = function(ev) {
