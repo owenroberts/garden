@@ -127,7 +127,6 @@ function loadSound() {
 			'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
 		]},
 		function() {
-			console.log('doodoo loaded');
 			doodooLoaded = true;
 		}
 	);
