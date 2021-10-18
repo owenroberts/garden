@@ -106,6 +106,7 @@ function loadSound() {
 		var audio = new Audio();
 		audio.addEventListener('canplaythrough', loadedAudio, false);
 		audio.src = url;
+		audio.load();
 		sfx.push(audio);
 	}
 
