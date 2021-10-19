@@ -45,6 +45,7 @@ let pilgrim, sfx = [];
 let charon;
 let userStarted = false;
 let halfHeight, halfWidth; // update on size change ...
+let doodoo;
 
 function loadSound() {
 	gme.scenes.current = 'loading';
@@ -122,7 +123,7 @@ function loadSound() {
 	}
 
 	let doodooLoaded = false;
-	let doodoo = new Doodoo({
+	doodoo = new Doodoo({
 		tonic: 'C4', 
 		parts: [
 			'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
@@ -308,11 +309,7 @@ window.keyDown = function(key) {
 		case 'h':
 			if (!userStarted) loadSound();
 		break;
-		console.log(key);
-		case 'm':
-			console.log(gme.scenes.current);
 
-			break;
 	}
 };
 
@@ -426,6 +423,16 @@ function blurHandler() {
 	for (const k in pilgrim.input) {
 		pilgrim.input[k] = false;
 	}
-}
+	console.log('blur');
 
+}
 window.addEventListener('blur', blurHandler);
+
+// turn of music
+document.addEventListener('visibilitychange', ev => {
+	if (document.visibilityState === 'visible') {
+		if (doodoo) doodoo.play();
+	} else {
+		if (doodoo) doodoo.stop();
+	}
+});
