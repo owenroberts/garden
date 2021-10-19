@@ -23,7 +23,7 @@ const gme = new Game({
 	// debug: true,
 	// stats: true,
 	suspend: true,
-	// events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
+	events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
 	scenes: ['game', 'splash', 'loading'],
 	bounds: {
 		left: -5000,
