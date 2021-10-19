@@ -23,7 +23,7 @@ const gme = new Game({
 	// debug: true,
 	// stats: true,
 	suspend: true,
-	events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
+	// events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
 	scenes: ['game', 'splash', 'loading'],
 	bounds: {
 		left: -5000,
@@ -37,6 +37,7 @@ gme.load({
 	scenery: 'data/scenery.json',
 	textures: 'data/textures.json',
 	sprites: 'data/sprites.json',
+	// scenery: 'data/scene_test.json',
 	ui: 'data/ui.json',
 }, false);
 
@@ -307,6 +308,11 @@ window.keyDown = function(key) {
 		case 'h':
 			if (!userStarted) loadSound();
 		break;
+		console.log(key);
+		case 'm':
+			console.log(gme.scenes.current);
+
+			break;
 	}
 };
 
@@ -343,7 +349,6 @@ window.mouseDown = function(x, y, button) {
 	}
 	if (button === 3) blurHandler();
 };
-
 
 window.mouseUp = function(x, y) {
 	if (gme.scenes.currentName === 'splash') {
