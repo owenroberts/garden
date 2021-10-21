@@ -128,7 +128,9 @@ function loadSound() {
 		parts: [
 			'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
 			'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
-		]},
+		],
+		samples: './dist/doodoo/samples/choir/',
+		},
 		function() {
 			doodooLoaded = true;
 		}
@@ -423,8 +425,6 @@ function blurHandler() {
 	for (const k in pilgrim.input) {
 		pilgrim.input[k] = false;
 	}
-	console.log('blur');
-
 }
 window.addEventListener('blur', blurHandler);
 
