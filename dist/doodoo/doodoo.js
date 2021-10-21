@@ -7,7 +7,7 @@ Number.prototype.clamp = function(min, max) {
 };
 
 export default function Doodoo(params, callback) {
-	// params -- tonic, parts, startDuration, scale, samples
+	// params -- _tonic, _parts, _startDuration, _scale
 
 	let debug = false;
 	let noteNames = [];
@@ -126,8 +126,8 @@ export default function Doodoo(params, callback) {
 					if (loop.count >= startDelay && (loop.count % 1 === 0 || doubler)) {
 						const beat = melody[Math.floor(loop.count - startDelay + startIndex) % melody.length];
 						if (!beat) {
-							console.log('beat', beat);
-							console.log(melody, loop, startDelay, startIndex);
+							// console.log('beat', beat);
+							// console.log(melody, loop, startDelay, startIndex);
 							continue;
 						}
 						if (beat[0] !== null) {
@@ -214,7 +214,7 @@ export default function Doodoo(params, callback) {
 		console.time('load choir samples');
 		choirSamples = new Tone.ToneAudioBuffers({
 			urls: urls,
-			baseUrl: params.samples || './doodoo/samples/choir/',
+			baseUrl: './doodoo/samples/choir/',
 			onload: () => {
 				console.timeEnd('load choir samples');
 				callback();
@@ -225,6 +225,7 @@ export default function Doodoo(params, callback) {
 	this.setBPM = function(bpm) {
 		Tone.Transport.bpm.value = bpm; // starts 128
 	}
+
 
 	this.play = function() {
 		if (Tone.Transport.state === 'stopped') playTheme();
