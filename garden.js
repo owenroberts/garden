@@ -135,6 +135,7 @@ function loadSound() {
 			doodooLoaded = true;
 		}
 	);
+	doodoo.setBPM(112);
 
 	const loader = setInterval(() => {
 		if (loaded === audioFiles.length && doodooLoaded) {
