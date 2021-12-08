@@ -1,11 +1,9 @@
-console.log('fart 3');
-
+// loading animation pre lines render
 const title = document.getElementById('title');
 function loadingAnimation() {
 	let t = '~' + title.textContent + '~';
 	title.textContent = t;
 }
-
 let loadingInterval = setInterval(loadingAnimation, 1000 / 12);
 
 const isMobile = Cool.mobilecheck();
@@ -129,7 +127,7 @@ function loadSound() {
 			'C4', null, 'E3', 'F3', 'G3', null, 'D3', 'E3', 
 			'D3', 'F3', 'E3', 'D3', 'F3', 'E3', 'D3', 'F3', 
 		],
-		samples: './dist/doodoo/samples/choir/',
+		samples: './samples/choir/',
 		},
 		function() {
 			doodooLoaded = true;

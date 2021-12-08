@@ -1,26 +1,21 @@
 const { src, dest, watch, series, parallel, task } = require('gulp');
 const doodoo = require('./doodoo/gulpfile');
-console.log(doodoo.files);
+const lines = require('./lines/gulpfile');
 
 // const webpack = require('webpack-stream');
+const replace = require('gulp-replace');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create();
-const notify = require('gulp-notify');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify-es').default;
 
 function browserSyncTask() {
-	browserSync.init({
+	return browserSync.init({
 		port: 8080,
 		server: {
 			baseDir: './',
 		}
 	});
-}
-
-function reload(done) {
-	browserSync.reload();
-	done();
 }
 
 const jsFiles = [
@@ -39,8 +34,8 @@ const devFiles = [
 	'./lines/build/lib/stats.js/build/stats.min.js'
 ];
 
-function jsTask(done) {
-	src(jsFiles)
+function jsTask() {
+	return src(jsFiles)
 		.pipe(sourcemaps.init())
 		.pipe(concat('garden.min.js'))
 		.pipe(uglify())
@@ -50,28 +45,44 @@ function jsTask(done) {
 			this.emit('end'); // Recover from errors
 		})
 		.pipe(browserSync.stream());
-	done();
 }
 
-function libTask(done) {
-	src(libFiles)
-		.pipe(sourcemaps.init())
-		.pipe(concat('lib.min.js'))
-		.pipe(uglify())
-		.pipe(sourcemaps.write('./src_maps'))
+// this seems to work but its slow as fuck
+function doodooCopy() {
+	return src(['./doodoo/build/**/*'])
 		.pipe(dest('./build'))
-		.on('error', function handleError() {
-			this.emit('end'); // Recover from errors
-		})
-	done();
+		.pipe(browserSync.stream());
+}
+
+function linesCopy() {
+	// choose just base and game later ...
+	return src([
+			'./lines/build/base.min.js', 
+			'./lines/build/src_maps/base.min.js.map',
+			'./lines/build/game.min.js',
+			'./lines/build/src_maps/game.min.js.map',
+			'./lines/build/lib/**/*',
+		], { base: './lines/build/' })
+		.pipe(dest('./build'))
+		.pipe(browserSync.stream());
 }
 
 function watchTask(){
-	watch('src/**/*.js', series('jsTask'));
-	watch(doodoo.files, series(doodoo.task, libTask, reload));
+	watch('src/**/*.js', series(jsTask));
+	watch(doodoo.files, series(doodoo.exportTask, doodooCopy));
+	watch(['./lines/classes/*.js', './lines/game/classes/*.js'], series(lines.exportTask, linesCopy));
+}
+
+function cacheBustTask(){
+	var cbString = new Date().getTime();
+	return src(['index.html'])
+		.pipe(replace(/cb=\d+/g, 'cb=' + cbString))
+		.pipe(dest('.'));
 }
 
 task('jsTask', jsTask);
-task('dev', series(doodoo.task, jsTask, libTask));
-task('default', parallel(browserSyncTask, watchTask));
-task('watch', parallel(browserSyncTask, watchTask));
+task('build', series(doodoo.exportTask, lines.exportTask, doodooCopy, linesCopy, jsTask));
+task('watch', series('build', cacheBustTask, browserSyncTask, watchTask));
+task('default', series('watch'));
+
+
