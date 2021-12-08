@@ -1,5 +1,4 @@
-/* what the hell am i doing */
-import Doodoo from './dist/doodoo/doodoo.js';
+console.log('fart 3');
 
 const title = document.getElementById('title');
 function loadingAnimation() {
@@ -30,14 +29,14 @@ const gme = new Game({
 		top: -4000,
 		right: 5000,
 		bottom: 10000,
-	}
+	},
+	relativeLoadPath: true,
 });
 
 gme.load({ 
 	scenery: 'data/scenery.json',
 	textures: 'data/textures.json',
 	sprites: 'data/sprites.json',
-	// scenery: 'data/scene_test.json',
 	ui: 'data/ui.json',
 }, false);
 
@@ -48,6 +47,7 @@ let halfHeight, halfWidth; // update on size change ...
 let doodoo;
 
 function loadSound() {
+	const { Doodoo } = doodooLib; // import lib
 	gme.scenes.current = 'loading';
 	// https://stackoverflow.com/questions/31060642/preload-multiple-audio-files
 	const audioFiles = [
@@ -154,7 +154,7 @@ function userStart() {
 	gme.scenes.current = 'game';
 }
 
-window.start = function() {
+gme.start = function() {
 
 	halfHeight = Math.round(gme.view.height / 2);
 	halfWidth = Math.round(gme.view.width / 2);
@@ -167,7 +167,7 @@ window.start = function() {
 	let splash = new UI({
 		x: 0.5,
 		y: isMobile ? 128 : 0.25,
-		animation: gme.anims.ui.start,
+		animation: gme.anims.ui.title,
 	});
 	gme.scenes.splash.addToDisplay(splash);
 
@@ -267,7 +267,7 @@ window.start = function() {
 	}
 };
 
-window.update = function(timeElapsed) {
+gme.update = function(timeElapsed) {
 	pilgrim.checkBounds(gme.bounds, halfHeight, halfWidth);
 	pilgrim.update(timeElapsed / gme.dps);
 
@@ -278,7 +278,7 @@ window.update = function(timeElapsed) {
 	if (gme.scenes.currentName === 'game') charon.update(offset, timeElapsed / gme.dps);
 };
 
-window.draw = function() {
+gme.draw = function() {
 	gme.scenes.current.display();
 	if (gme.scenes.currentName === 'game') {
 		charon.display();
@@ -287,7 +287,7 @@ window.draw = function() {
 };
 
 /* events */
-window.keyDown = function(key) {
+gme.keyDown = function(key) {
 	switch (key) {
 		case 'a':
 		case 'left':
@@ -316,7 +316,7 @@ window.keyDown = function(key) {
 	}
 };
 
-window.keyUp = function(key) {
+gme.keyUp = function(key) {
 	switch (key) {
 		case 'a':
 		case 'left':
@@ -337,20 +337,20 @@ window.keyUp = function(key) {
 	}
 };
 
-window.mouseMoved = function(x, y) {
+gme.mouseMoved = function(x, y) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseMoved(x, y);
 	}
 };
 
-window.mouseDown = function(x, y, button) {
+gme.mouseDown = function(x, y, button) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseDown(x, y);
 	}
 	if (button === 3) blurHandler();
 };
 
-window.mouseUp = function(x, y) {
+gme.mouseUp = function(x, y) {
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseUp(x, y);
 	}
@@ -361,7 +361,7 @@ var startX, startY, startTime;
 const swipeTime = 200;
 const threshold = 30, restraint = 100;
 
-window.touchStart = function(ev) {
+gme.touchStart = function(ev) {
 	const touchobj = ev.changedTouches[0];
 	startX = touchobj.pageX;
 	startY = touchobj.pageY;
@@ -374,7 +374,7 @@ window.touchStart = function(ev) {
 	startTime = performance.now();
 };
 
-window.touchMove = function(ev) {
+gme.touchMove = function(ev) {
 	const touchobj = ev.changedTouches[0];
 
 	const deltaX = startX - touchobj.pageX;
@@ -408,7 +408,7 @@ window.touchMove = function(ev) {
 	}
 };
 
-window.touchEnd = function(ev) {
+gme.touchEnd = function(ev) {
 
 	if (gme.scenes.currentName === 'splash') {
 		gme.scenes.current.mouseUp(startX, startY);
@@ -419,6 +419,11 @@ window.touchEnd = function(ev) {
 	pilgrim.inputKey('up', false);
 	pilgrim.inputKey('right', false);
 	pilgrim.inputKey('down', false);
+};
+
+// figure this out later
+gme.sizeCanvas = function() {
+	// gme.setView(window.innerWidth, window.innerHeight);
 };
 
 // stop walking when user leaves

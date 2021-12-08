@@ -1,0 +1,29 @@
+{
+  "name": "garden",
+  "version": "1.0.0",
+  "description": "art game",
+  "dependencies": {
+    "gulp": "^4.0.2"
+  },
+  "devDependencies": {
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.27.7",
+    "browserify": "^17.0.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-if": "^3.0.0",
+    "gulp-notify": "^4.0.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify-es": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "uglify": "^0.1.5",
+    "webpack-stream": "^7.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owenroberts/garden.git"
+  },
+  "author": "owen ribbit",
+  "license": "MIT"
+}

@@ -15,7 +15,6 @@ class Pilgrim extends Sprite {
 		this.inBounds = [true, true];
 
 		this.hasSFX = false;
-
 	}
 
 	addSFX(sfx) {

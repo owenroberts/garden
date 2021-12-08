@@ -2,6 +2,8 @@ import { random, randInt, shuffle, chance, Range } from './lib/cool.js';
 import { MIDI, getMelody, getHarmony } from './lib/midi.js';
 import Mutation from './lib/Mutation.js';
 
+console.log('doodoo 2');
+
 Number.prototype.clamp = function(min, max) {
 	return Math.min(Math.max(this, min), max);
 };
@@ -247,8 +249,9 @@ export default function Doodoo(params, callback) {
 			part.update();
 		});
 	};
-
 }
+
+
 
 /*
 	

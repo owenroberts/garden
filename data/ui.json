@@ -1,5 +1,5 @@
 {
-	"start": { "src": "/drawings/ui/start.json" },
+	"title": { "src": "/drawings/ui/title.json" },
 	"wSound": { "src": "/drawings/ui/w_sound.json" },
 	"woutSound": { "src": "/drawings/ui/wout_sound.json" },
 	"what": { "src": "/drawings/ui/what.json" },
