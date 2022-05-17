@@ -3,6 +3,7 @@ notes.txt
 doc/
 music/
 *.gdoc
+*.gddoc
 wave-palette.json
 node_modules/
 bkup/

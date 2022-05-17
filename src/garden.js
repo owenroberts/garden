@@ -113,7 +113,7 @@ function loadSound() {
 	let loaded = 0;
 	function loadedAudio() {
 		loaded++;
-	    // if (loaded === audioFiles.length) userStart();
+		// if (loaded === audioFiles.length) userStart();
 	}
 
 	for (let i = 0; i < audioFiles.length; i++) {

@@ -24,7 +24,7 @@ class Pilgrim extends Sprite {
 			const type = f.split('-').shift();
 			if (!this.sfx[type]) this.sfx[type] = [];
 			this.sfx[type].push(clip);
-		})
+		});
 		this.sfxType = 'water';
 		this.sfxCount = 0;
 		this.sfxInterval = 18; // 24 / 2 + 1
@@ -91,9 +91,6 @@ class Pilgrim extends Sprite {
 
 		const speed = [0, 0];
 
-		// if (Object.values(this.input).filter(v => v).length > 2) return;
-		// let inputCount = 0;
-		// restrict three inputs?
 
 		if (this.input.up) {
 			speed[1] = -this.speed[1];
