@@ -354,6 +354,17 @@ gme.mouseUp = function(x, y) {
 	}
 };
 
+if (window.parent !== window) {
+	console.log('iframe detected');
+	window.parent.addEventListener('keydown', ev => {
+		gme.keyDown(Cool.keys[ev.which])
+	});
+
+	window.parent.addEventListener('keyup', ev => {
+		gme.keyUp(Cool.keys[ev.which])
+	});
+}
+
 /* mobile */
 var startX, startY, startTime;
 const swipeTime = 200;
