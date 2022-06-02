@@ -11,14 +11,13 @@ if (isMobile) document.body.classList.add('mobile');
 
 const gme = new Game({
 	dps: 24,
-	lineWidth: 1,
 	zoom: isMobile ? 1 : 1.5,
 	width: window.innerWidth,
 	height: window.innerHeight,
 	multiColor: true,
 	checkRetina: true,
 	// debug: true,
-	// stats: true,
+	stats: true,
 	suspend: true,
 	events: isMobile ? ['touch'] : ['keyboard', 'mouse'],
 	scenes: ['game', 'splash', 'loading'],

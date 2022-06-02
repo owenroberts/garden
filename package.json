@@ -15,7 +15,7 @@
     "gulp-sourcemaps": "^3.0.0",
     "gulp-uglify-es": "^3.0.0",
     "gulp-util": "^3.0.8",
-    "uglify": "^0.1.5",
+    "uglify": "^0.1.5"
   },
   "repository": {
     "type": "git",

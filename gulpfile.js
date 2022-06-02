@@ -82,7 +82,7 @@ function cacheBustTask(){
 
 task('jsTask', jsTask);
 task('build', series(doodoo.exportTask, lines.exportTask, doodooCopy, linesCopy, jsTask));
-task('watch', series('build', cacheBustTask, browserSyncTask, watchTask));
-task('default', series('watch'));
+task('watch', parallel('build', cacheBustTask, browserSyncTask, watchTask));
+task('default', parallel('watch'));
 
 
