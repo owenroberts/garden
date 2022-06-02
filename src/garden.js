@@ -9,11 +9,16 @@ let loadingInterval = setInterval(loadingAnimation, 1000 / 12);
 const isMobile = Cool.mobilecheck();
 if (isMobile) document.body.classList.add('mobile');
 
+const inIFrame = window.parent !== window;
+if (inIFrame) {
+	console.log('iframe detected');
+}
+
 const gme = new Game({
 	dps: 24,
 	zoom: isMobile ? 1 : 1.5,
-	width: window.innerWidth,
-	height: window.innerHeight,
+	width: inIFrame ? Math.max(window.innerWidth, 600) : window.innerWidth,
+	height: inIFrame ? Math.max(window.innerHeight, 500) : window.innerHeight,
 	multiColor: true,
 	checkRetina: true,
 	// debug: true,
@@ -354,8 +359,7 @@ gme.mouseUp = function(x, y) {
 	}
 };
 
-if (window.parent !== window) {
-	console.log('iframe detected');
+if (inIFrame) {
 	window.parent.addEventListener('keydown', ev => {
 		gme.keyDown(Cool.keys[ev.which])
 	});
